@@ -78,7 +78,7 @@ def rss_page():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("SELECT country, category, title, link, timestamp FROM rss_links ORDER BY timestamp DESC")
+        cursor.execute("SELECT country, category, title, link FROM rss_links")
         rss_links = cursor.fetchall()
         cursor.close()
         conn.close()
