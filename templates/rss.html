@@ -5,74 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RSS Feed</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            text-align: center; 
-            background-color: #f8f9fa;
-        }
-        .navbar {
-            background-color: #343a40;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-        }
-        .navbar a:hover {
-            background-color: #495057;
-        }
-        .container {
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-        .article {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-        .article:last-child {
-            border-bottom: none;
-        }
-        .article h3 {
-            margin: 0;
-            color: #007bff;
-        }
-        .article p {
-            margin: 5px 0;
-            color: #555;
-        }
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f8f9fa; }
+        .container { padding: 20px; }
+        table { width: 80%; margin: auto; border-collapse: collapse; background: white; }
+        th, td { padding: 10px; border: 1px solid black; text-align: left; }
+        th { background-color: blue; color: white; }
+        .filters { margin-bottom: 20px; }
+        select { padding: 10px; margin: 0 10px; font-size: 16px; }
     </style>
 </head>
 <body>
 
-    <!-- Navigation Bar -->
-    <div class="navbar">
-        <div>
-            <a href="{{ url_for('index') }}">Instagram & Facebook Links</a>
-            <a href="{{ url_for('rss_feed') }}">RSS Feed</a>
-        </div>
-        <a href="{{ url_for('logout') }}" style="color: red;">Logout</a>
+    <h2>RSS Feed</h2>
+    <a href="{{ url_for('logout') }}" style="float: right; color: red;">Logout</a>
+
+    <div class="filters">
+        <label for="countryFilter">Country:</label>
+        <select id="countryFilter">
+            <option value="">All</option>
+            {% for country in countries %}
+            <option value="{{ country }}">{{ country }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="categoryFilter">Category:</label>
+        <select id="categoryFilter">
+            <option value="">All</option>
+            {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
     </div>
 
-    <h2>RSS Feed</h2>
-    
     <div class="container">
-        {% for article in rss_articles %}
-        <div class="article">
-            <h3><a href="{{ article.link }}" target="_blank">{{ article.title }}</a></h3>
-            <p>{{ article.description }}</p>
-            <p><strong>Published:</strong> {{ article.pub_date }}</p>
-        </div>
-        {% endfor %}
+        <table id="rssTable">
+            <tr>
+                <th>Country</th>
+                <th>Category</th>
+                <th>Title</th>
+                <th>Link</th>
+                <th>Timestamp</th>
+            </tr>
+            {% for link in rss_links %}
+            <tr data-country="{{ link.country }}" data-category="{{ link.category }}">
+                <td>{{ link.country }}</td>
+                <td>{{ link.category }}</td>
+                <td>{{ link.title }}</td>
+                <td><a href="{{ link.link }}" target="_blank">{{ link.link }}</a></td>
+                <td>{{ link.timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
+
+    <script>
+        document.getElementById("countryFilter").addEventListener("change", function() {
+            let filterValue = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#rssTable tr[data-country]");
+
+            rows.forEach(row => {
+                row.style.display = filterValue === "" || row.getAttribute("data-country").toLowerCase() === filterValue ? "" : "none";
+            });
+        });
+
+        document.getElementById("categoryFilter").addEventListener("change", function() {
+            let filterValue = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#rssTable tr[data-category]");
+
+            rows.forEach(row => {
+                row.style.display = filterValue === "" || row.getAttribute("data-category").toLowerCase() === filterValue ? "" : "none";
+            });
+        });
+    </script>
 
 </body>
 </html>
