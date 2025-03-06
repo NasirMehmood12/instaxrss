@@ -167,7 +167,7 @@
         </table>
     </div>
 
-    <script>
+<!--     <script>
         document.getElementById("countryFilter").addEventListener("change", function() {
             let filterValue = this.value.toLowerCase();
             let rows = document.querySelectorAll("#rssTable tr[data-country]");
@@ -185,7 +185,26 @@
                 row.style.display = filterValue === "" || row.getAttribute("data-category").toLowerCase() === filterValue ? "" : "none";
             });
         });
-    </script>
+    </script> -->
+
+
+    <script>
+    function applyFilters() {
+        let countryFilter = document.getElementById("countryFilter").value.toLowerCase();
+        let categoryFilter = document.getElementById("categoryFilter").value.toLowerCase();
+        let rows = document.querySelectorAll("#rssTable tr[data-country]");
+
+        rows.forEach(row => {
+            let countryMatch = countryFilter === "" || row.getAttribute("data-country").toLowerCase() === countryFilter;
+            let categoryMatch = categoryFilter === "" || row.getAttribute("data-category").toLowerCase() === categoryFilter;
+
+            row.style.display = countryMatch && categoryMatch ? "" : "none";
+        });
+    }
+
+    document.getElementById("countryFilter").addEventListener("change", applyFilters);
+    document.getElementById("categoryFilter").addEventListener("change", applyFilters);
+</script>
 
 </body>
 </html>
