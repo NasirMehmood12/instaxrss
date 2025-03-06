@@ -78,13 +78,13 @@ def rss_page():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("SELECT country, category, title, link, timestamp FROM rss_links")
+        cursor.execute("SELECT country, category, title, link FROM rss_links")
         rss_links = cursor.fetchall()
         cursor.close()
         conn.close()
 
         rss_data = [
-            {"country": row[0], "category": row[1], "title": row[2], "link": row[3], "timestamp": row[4]}
+            {"country": row[0], "category": row[1], "title": row[2], "link": row[3]}
             for row in rss_links
         ]
 
