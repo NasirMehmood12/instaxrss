@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
         .container { padding: 20px; }
         table { width: 80%; margin: auto; border-collapse: collapse; background: white; }
         th, td { padding: 10px; border: 1px solid black; text-align: left; }
-        th { background-color: blue; color: white; }
+        th { background-color: red; color: white; }
         .filters { margin-bottom: 20px; }
         select { padding: 10px; margin: 0 10px; font-size: 16px; }
     </style>
@@ -44,7 +44,7 @@
                 <th>Category</th>
                 <th>Title</th>
                 <th>Link</th>
-<!--                 <th>Timestamp</th> -->
+<!--                 <th>Timestamp</th> 
             </tr>
             {% for link in rss_links %}
             <tr data-country="{{ link.country }}" data-category="{{ link.category }}">
@@ -52,7 +52,114 @@
                 <td>{{ link.category }}</td>
                 <td>{{ link.title }}</td>
                 <td><a href="{{ link.link }}" target="_blank">{{ link.link }}</a></td>
-<!--                 <td>{{ link.timestamp }}</td> -->
+<!--                 <td>{{ link.timestamp }}</td> 
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <script>
+        document.getElementById("countryFilter").addEventListener("change", function() {
+            let filterValue = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#rssTable tr[data-country]");
+
+            rows.forEach(row => {
+                row.style.display = filterValue === "" || row.getAttribute("data-country").toLowerCase() === filterValue ? "" : "none";
+            });
+        });
+
+        document.getElementById("categoryFilter").addEventListener("change", function() {
+            let filterValue = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#rssTable tr[data-category]");
+
+            rows.forEach(row => {
+                row.style.display = filterValue === "" || row.getAttribute("data-category").toLowerCase() === filterValue ? "" : "none";
+            });
+        });
+    </script>
+
+
+</body>
+</html>
+ -->
+
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS Feed</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f8f9fa; }
+        .navbar {
+            background-color: #343a40;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        .navbar a:hover {
+            background-color: #495057;
+        }
+        .container { padding: 20px; }
+        table { width: 80%; margin: auto; border-collapse: collapse; background: white; }
+        th, td { padding: 10px; border: 1px solid black; text-align: left; }
+        th { background-color: red; color: white; }
+        .filters { margin-bottom: 20px; }
+        select { padding: 10px; margin: 0 10px; font-size: 16px; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div>
+            <a href="{{ url_for('index') }}">Instagram & Facebook Links</a>
+            <a href="{{ url_for('rss_feed') }}">RSS Feed</a>
+        </div>
+        <a href="{{ url_for('logout') }}" style="color: red;">Logout</a>
+    </div>
+
+    <h2>RSS Feed</h2>
+
+    <div class="filters">
+        <label for="countryFilter">Country:</label>
+        <select id="countryFilter">
+            <option value="">All</option>
+            {% for country in countries %}
+            <option value="{{ country }}">{{ country }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="categoryFilter">Category:</label>
+        <select id="categoryFilter">
+            <option value="">All</option>
+            {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="container">
+        <table id="rssTable">
+            <tr>
+                <th>Country</th>
+                <th>Category</th>
+                <th>Title</th>
+                <th>Link</th>
+            </tr>
+            {% for link in rss_links %}
+            <tr data-country="{{ link.country }}" data-category="{{ link.category }}">
+                <td>{{ link.country }}</td>
+                <td>{{ link.category }}</td>
+                <td>{{ link.title }}</td>
+                <td><a href="{{ link.link }}" target="_blank">{{ link.link }}</a></td>
             </tr>
             {% endfor %}
         </table>
