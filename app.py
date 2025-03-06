@@ -84,7 +84,7 @@ def rss_page():
         conn.close()
 
         rss_data = [
-            {"country": row[0], "category": row[1], "title": row[2], "link": row[3], "timestamp": row[4]}
+            {"country": row[0], "category": row[1], "title": row[2], "link": row[3]}
             for row in rss_links
         ]
 
