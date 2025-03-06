@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram & Facebook Links</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #343a40;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        .navbar a:hover {
+            background-color: #495057;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Space between tables */
+            padding: 20px;
+        }
+        table { 
+            width: 45%; 
+            border-collapse: collapse; 
+            background: white; 
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td { 
+            padding: 10px; 
+            border: 1px solid black; 
+            text-align: left; 
+        }
+        th { 
+            background-color: red; 
+            color: white;
+        }
+        td:first-child { 
+            font-weight: bold; /* Bold Page Name */
+        }
+        .filters {
+            margin-bottom: 20px;
+        }
+        select {
+            padding: 10px;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div>
+            <a href="{{ url_for('index') }}">Instagram & Facebook Links</a>
+            <a href="{{ url_for('rss_feed') }}">RSS Feed</a>
+        </div>
+        <a href="{{ url_for('logout') }}" style="color: red;">Logout</a>
+    </div>
+
+    <h2>Instagram & Facebook Links</h2>
+
+    <!-- Dropdown Filters -->
+    <div class="filters">
+        <label for="instagramFilter">Instagram:</label>
+        <select id="instagramFilter">
+            <option value="">All</option>
+            {% for link in instagram_links %}
+            <option value="{{ link.page_name }}">{{ link.page_name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="facebookFilter">Facebook:</label>
+        <select id="facebookFilter">
+            <option value="">All</option>
+            {% for link in fb_links %}
+            <option value="{{ link.page_name }}">{{ link.page_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="container">
+        <!-- Instagram Links Table -->
+        <div>
+            <h3>Instagram Links</h3>
+            <table id="instagramTable">
+                <tr>
+                    <th>Page Name</th>
+                    <th>Link</th>
+                    <th>Time Posted</th>
+                </tr>
+                {% for link in instagram_links %}
+                <tr data-page="{{ link.page_name }}">
+                    <td>{{ link.page_name }}</td>
+                    <td><a href="{{ link.link }}" target="_blank">{{ link.link }}</a></td>
+                    <td>{{ link.timestamp }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- Facebook Links Table -->
+        <div>
+            <h3>Facebook Links</h3>
+            <table id="facebookTable">
+                <tr>
+                    <th>Page Name</th>
+                    <th>Link</th>
+                    <th>Time Posted</th>
+                </tr>
+                {% for link in fb_links %}
+                <tr data-page="{{ link.page_name }}">
+                    <td>{{ link.page_name }}</td>
+                    <td><a href="{{ link.link }}" target="_blank">{{ link.link }}</a></td>
+                    <td>{{ link.timestamp }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("instagramFilter").addEventListener("change", function() {
+            let filterValue = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#instagramTable tr[data-page]");
+
+            rows.forEach(row => {
+                row.style.display = filterValue === "" || row.getAttribute("data-page").toLowerCase() === filterValue ? "" : "none";
+            });
+        });
+
+        document.getElementById("facebookFilter").addEventListener("change", function() {
+            let filterValue = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#facebookTable tr[data-page]");
+
+            rows.forEach(row => {
+                row.style.display = filterValue === "" || row.getAttribute("data-page").toLowerCase() === filterValue ? "" : "none";
+            });
+        });
+    </script>
+
+</body>
+</html>
