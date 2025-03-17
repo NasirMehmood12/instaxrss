@@ -36,7 +36,7 @@ def get_fb_links():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute('SELECT link, timestamp, page_name FROM fb_links ORDER BY timestamp DESC')
+        cursor.execute('SELECT * FROM fb_links ORDER BY CAST(LEFT(timestamp, LENGTH(timestamp) - 1) AS INTEGER) DESC')
         data = cursor.fetchall()
         
         results = [
