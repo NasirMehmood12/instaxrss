@@ -25,35 +25,39 @@
         .navbar a:hover {
             background-color: #87888a;
         }
-        .container {
+/*         .container {
             display: flex;
             justify-content: center;
             gap: 30px; /* Space between tables*/
             padding: 20px;
         }  
-
+ */
             
 
 
-            table { 
+/*             table { 
             width: 45%; 
             border-collapse: collapse; 
             background: white; 
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-
+ */
 
  
-
+/* 
         }
         th, td { 
             padding: 10px; 
             border: 1px solid black; 
             text-align: left; 
-        }
-        th { 
+        } */
+
+        
+/*         th { 
             background-color: red; 
             color: white;
-        }
+        } */
+
+        
         td:first-child { 
             font-weight: bold; /* Bold Page Name */
         }
@@ -65,6 +69,46 @@
             margin: 0 10px;
             font-size: 16px;
         }
+
+
+
+        .container {
+    display: flex;
+    flex-wrap: wrap; /* Allows tables to stack when screen size is small */
+    justify-content: center;
+    gap: 30px; /* Space between tables */
+    padding: 20px;
+    max-width: 100%;
+    overflow-x: auto; /* Enables horizontal scrolling if needed */
+}
+
+table {
+    width: 100%; /* Use full width of the container */
+    max-width: 600px; /* Set a max width to prevent too much stretching */
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid black;
+    text-align: left;
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+th {
+    background-color: red;
+    color: white;
+}
+
+td img {
+    max-width: 100px; /* Ensure images scale properly */
+    height: auto;
+    display: block;
+    margin: auto;
+}
 
        
 
