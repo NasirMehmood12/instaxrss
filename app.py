@@ -42,7 +42,7 @@ def get_instagram_links():
         data = cursor.fetchall()
         
         results = [
-            {"page_name": row[0], "link": row[1],"post_image":row[2],"caption":row[3] "timestamp": row[4].strftime('%Y-%m-%d %H:%M:%S') if row[4] else None,}
+            {"page_name": row[0], "link": row[1],"post_image":row[2],"caption":row[3], "timestamp": row[4].strftime('%Y-%m-%d %H:%M:%S') if row[4] else None,}
             for row in data
         ]
 
