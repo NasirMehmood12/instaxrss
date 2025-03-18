@@ -107,13 +107,18 @@
                 <tr>
                     <th>Page Name</th>
                     <th>Link</th>
+                    <th>Caption</th>
                     <th>Time Posted</th>
+                    <th>caption</th>
+                    
                 </tr>
                 {% for link in instagram_links %}
                 <tr data-page="{{ link.page_name }}">
                     <td>{{ link.page_name }}</td>
                     <td><a href="{{ link.link }}" target="_blank">{{ link.link }}</a></td>
                     <td>{{ link.timestamp }}</td>
+                    <td>{{ link.caption }}</td>
+                    <td><img src="{{ link.post_image }}" width="50"></td>
                 </tr>
                 {% endfor %}
             </table>
