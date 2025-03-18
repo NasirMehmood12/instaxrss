@@ -107,9 +107,9 @@
                 <tr>
                     <th>Page Name</th>
                     <th>Link</th>
-                    <th>Caption</th>
                     <th>Time Posted</th>
-                    <th>caption</th>
+                    <th>Caption</th>
+                    <th>Display Image</th>
                     
                 </tr>
                 {% for post in instagram_posts %}
@@ -118,7 +118,7 @@
                     <td><a href="{{ post.link }}" target="_blank">{{ post.link }}</a></td>
                     <td>{{ post.timestamp }}</td>
                     <td>{{ post.caption }}</td>
-                    <td><img src="{{ post.post_image }}" width="50"></td>
+                    <td><img src="{{ post.post_image }}" width="100"></td>
                 </tr>
                 {% endfor %}
             </table>
