@@ -33,7 +33,7 @@ PASSWORD = "imm@geotv"
 
 
 
-def get_instagram_links():
+def get_instagram_posts():
     """Fetch Instagram links from the database, including timestamps."""
     try:
         conn = psycopg2.connect(DATABASE_URL)
