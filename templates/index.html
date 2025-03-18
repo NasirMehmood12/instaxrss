@@ -25,22 +25,43 @@
         .navbar a:hover {
             background-color: #87888a;
         }
-        .container {
+/*         .container {
             display: flex;
             justify-content: center;
             gap: 30px; /* Space between tables*/
             padding: 20px;
-        } 
+        }  */
+
+
+        .container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    align-items: flex-start;
+    gap: 10px; /* Reduce the gap to bring tables closer */
+    padding: 10px;
+}
+
 
             
 
 
         
-        table { 
+/*         table { 
             width: 45%; 
             border-collapse: collapse; 
             background: white; 
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); */
+
+
+        table { 
+    width: 50%;  /* Adjust width for better alignment */
+    min-width: 600px; /* Prevent it from getting too small */
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
         }
         th, td { 
             padding: 10px; 
@@ -62,6 +83,22 @@
             margin: 0 10px;
             font-size: 16px;
         }
+
+
+        td img {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+
+
+
+
+        td {
+    vertical-align: middle;
+}
+
        
 
     </style>
