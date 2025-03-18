@@ -11,16 +11,38 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://instaxrss_user:QGBb5ALqiB
 USERNAME = "IMM"
 PASSWORD = "imm@geotv"
 
+# def get_instagram_links():
+#     """Fetch Instagram links from the database, including timestamps."""
+#     try:
+#         conn = psycopg2.connect(DATABASE_URL)
+#         cursor = conn.cursor()
+#         cursor.execute("SELECT page_name, link, timestamp AT TIME ZONE 'Asia/Karachi' FROM instagram_links ORDER BY timestamp DESC")
+#         data = cursor.fetchall()
+        
+#         results = [
+#             {"page_name": row[0], "link": row[1], "timestamp": row[2].strftime('%Y-%m-%d %H:%M:%S') if row[2] else None}
+#             for row in data
+#         ]
+
+#         cursor.close()
+#         conn.close()
+#         return results  
+#     except Exception as e:
+#         print(f"Error fetching Instagram links: {e}")
+#         return []
+
+
+
 def get_instagram_links():
     """Fetch Instagram links from the database, including timestamps."""
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("SELECT page_name, link, timestamp AT TIME ZONE 'Asia/Karachi' FROM instagram_links ORDER BY timestamp DESC")
+        cursor.execute("SELECT page_name, link, post_image, caption, timestamp AT TIME ZONE 'Asia/Karachi' FROM instagram_posts ORDER BY timestamp DESC")
         data = cursor.fetchall()
         
         results = [
-            {"page_name": row[0], "link": row[1], "timestamp": row[2].strftime('%Y-%m-%d %H:%M:%S') if row[2] else None}
+            {"page_name": row[0], "link": row[1],"post_image":row[2],"caption":row[3] "timestamp": row[4].strftime('%Y-%m-%d %H:%M:%S') if row[4] else None,}
             for row in data
         ]
 
@@ -30,6 +52,8 @@ def get_instagram_links():
     except Exception as e:
         print(f"Error fetching Instagram links: {e}")
         return []
+
+
 
 def get_fb_links():
     """Fetch Facebook links from the database, including timestamps."""
@@ -57,14 +81,14 @@ def index():
     if "user" not in session:
         return redirect(url_for("login"))  
 
-    instagram_links = get_instagram_links()
+    instagram_posts = get_instagram_posts()
     fb_links = get_fb_links()
 
-    instagram_pages = list(set([link["page_name"] for link in instagram_links]))  
+    instagram_pages = list(set([link["page_name"] for link in instagram_posts]))  
     facebook_pages = list(set([link["page_name"] for link in fb_links]))
    
     return render_template("index.html", 
-                           instagram_links=instagram_links, 
+                           instagram_posts=instagram_posts, 
                            fb_links=fb_links, 
                            instagram_pages=instagram_pages, 
                            facebook_pages=facebook_pages)
