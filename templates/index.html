@@ -85,8 +85,8 @@
         <label for="instagramFilter">Instagram:</label>
         <select id="instagramFilter">
             <option value="">All</option>
-            {% for link in instagram_links %}
-            <option value="{{ link.page_name }}">{{ link.page_name }}</option>
+            {% for post in instagram_posts %}
+            <option value="{{ post.page_name }}">{{ post.page_name }}</option>
             {% endfor %}
         </select>
 
@@ -112,13 +112,13 @@
                     <th>caption</th>
                     
                 </tr>
-                {% for link in instagram_links %}
-                <tr data-page="{{ link.page_name }}">
-                    <td>{{ link.page_name }}</td>
-                    <td><a href="{{ link.link }}" target="_blank">{{ link.link }}</a></td>
-                    <td>{{ link.timestamp }}</td>
-                    <td>{{ link.caption }}</td>
-                    <td><img src="{{ link.post_image }}" width="50"></td>
+                {% for post in instagram_posts %}
+                <tr data-page="{{ post.page_name }}">
+                    <td>{{ post.page_name }}</td>
+                    <td><a href="{{ post.link }}" target="_blank">{{ post.link }}</a></td>
+                    <td>{{ post.timestamp }}</td>
+                    <td>{{ post.caption }}</td>
+                    <td><img src="{{ post.post_image }}" width="50"></td>
                 </tr>
                 {% endfor %}
             </table>
