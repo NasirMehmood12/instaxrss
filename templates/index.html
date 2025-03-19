@@ -104,7 +104,7 @@ th {
 }
 
 td img {
-    max-width: 100px; /* Ensure images scale properly */
+    max-width: 300px; /* Ensure images scale properly */
     height: auto;
     display: block;
     margin: auto;
@@ -166,7 +166,7 @@ td img {
                     <td><a href="{{ post.link }}" target="_blank">{{ post.link }}</a></td>
                     <td>{{ post.timestamp }}</td>
                     <td>{{ post.caption }}</td>
-                    <td><img src="{{ post.post_image }}" width="300px"></td>
+                    <td><img src="{{ post.post_image }}" width="200"></td>
                 </tr>
                 {% endfor %}
             </table>
