@@ -33,7 +33,7 @@ PASSWORD = "imm@geotv"
 
 
 
-def get_instagram_posts():
+def get_instagram_post():
     """Fetch Instagram links from the database, including timestamps."""
     try:
         conn = psycopg2.connect(DATABASE_URL)
@@ -81,14 +81,14 @@ def index():
     if "user" not in session:
         return redirect(url_for("login"))  
 
-    instagram_posts = get_instagram_posts()
+    instagram_post = get_instagram_post()
     fb_links = get_fb_links()
 
-    instagram_pages = list(set([link["page_name"] for link in instagram_posts]))  
+    instagram_pages = list(set([link["page_name"] for link in instagram_post]))  
     facebook_pages = list(set([link["page_name"] for link in fb_links]))
    
     return render_template("index.html", 
-                           instagram_posts=instagram_posts, 
+                           instagram_post=instagram_post, 
                            fb_links=fb_links, 
                            instagram_pages=instagram_pages, 
                            facebook_pages=facebook_pages)
