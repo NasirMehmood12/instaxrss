@@ -137,9 +137,13 @@ td img {
                     <td><a href="{{ post.link }}" target="_blank">{{ post.link }}</a></td>
                     <td>{{ post.timestamp }}</td>
                     <td>{{ post.caption }}</td>
-<!--                     <td><img src="{{ post.post_image }}" width="500" ></td> -->
+                    <td><img src="{{ post.post_image }}" width="500" ></td>
+                    <td><video width="300px" controls>
+    <source src="{{ post.post_image }}" type="video/mp4">
+</video>
+></td>
 
-                             <td>
+<!--                              <td>
     {% if ".mp4" in post.post_image %}
         <video width="300px" controls>
             <source src="{{ post.post_image }}" type="video/mp4">
@@ -148,7 +152,7 @@ td img {
     {% else %}
         <img src="{{ post.post_image }}" width="300" alt="Post Image">
     {% endif %}
-</td>
+</td> -->
 
 
 
