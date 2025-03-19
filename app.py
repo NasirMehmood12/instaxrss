@@ -38,7 +38,7 @@ def get_instagram_posts():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("SELECT page_name, link, post_image, caption, timestamp AT TIME ZONE 'Asia/Karachi' FROM instagram_posts ORDER BY timestamp DESC")
+        cursor.execute("SELECT page_name, link, post_image, caption, timestamp AT TIME ZONE 'Asia/Karachi' FROM instagram_post ORDER BY timestamp DESC")
         data = cursor.fetchall()
         
         results = [
