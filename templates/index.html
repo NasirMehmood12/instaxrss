@@ -103,7 +103,7 @@ td img {
         <label for="instagramFilter">Instagram:</label>
         <select id="instagramFilter">
             <option value="">All</option>
-            {% for post in instagram_posts %}
+            {% for post in instagram_post %}
             <option value="{{ post.page_name }}">{{ post.page_name }}</option>
             {% endfor %}
         </select>
@@ -130,7 +130,7 @@ td img {
                     <th>Display Image</th>
                     
                 </tr>
-                {% for post in instagram_posts %}
+                {% for post in instagram_post %}
                 <tr data-page="{{ post.page_name }}">
                     <td>{{ post.page_name }}</td>
                     <td><a href="{{ post.link }}" target="_blank">{{ post.link }}</a></td>
