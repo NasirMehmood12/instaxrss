@@ -105,6 +105,7 @@ td img {
             <option value="">All</option>
             {% for post in instagram_post %}
             <option value="{{ post.page_name }}">{{ post.page_name }}</option>
+   
             {% endfor %}
         </select>
 
@@ -136,7 +137,22 @@ td img {
                     <td><a href="{{ post.link }}" target="_blank">{{ post.link }}</a></td>
                     <td>{{ post.timestamp }}</td>
                     <td>{{ post.caption }}</td>
-                    <td><img src="{{ post.post_image }}" width="500"></td>
+<!--                     <td><img src="{{ post.post_image }}" width="500"></td> -->
+
+                             <td>
+    {% if ".mp4" in post.post_image %}
+        <video width="300px" controls>
+            <source src="{{ post.post_image }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    {% else %}
+        <img src="{{ post.post_image }}" width="300px">
+    {% endif %}
+</td>
+
+
+
+                    
                 </tr>
                 {% endfor %}
             </table>
