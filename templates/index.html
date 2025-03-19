@@ -137,7 +137,7 @@ td img {
                     <td><a href="{{ post.link }}" target="_blank">{{ post.link }}</a></td>
                     <td>{{ post.timestamp }}</td>
                     <td>{{ post.caption }}</td>
-<!--                     <td><img src="{{ post.post_image }}" width="500"></td> -->
+<!--                     <td><img src="{{ post.post_image }}" width="500" ></td> -->
 
                              <td>
     {% if ".mp4" in post.post_image %}
@@ -146,7 +146,7 @@ td img {
             Your browser does not support the video tag.
         </video>
     {% else %}
-        <img src="{{ post.post_image }}" width="300px">
+        <img src="{{ post.post_image }}" width="300px" alt="Post Image">
     {% endif %}
 </td>
 
