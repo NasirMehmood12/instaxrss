@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Links</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #003366 0%, #ff00ff 100%);
+            color: white;
+            margin: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #240046, #9d0191);
+            padding: 15px;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 20px;
+        }
+        .filters {
+            margin: 20px 0;
+            text-align: center;
+        }
+        select {
+            padding: 5px;
+            margin: 0 10px;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #9d0191;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #1a1a1a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div>
+            <a href="{{ url_for('index') }}">instagram Links</a>
+            <a href="{{ url_for('rss_page') }}">Google News</a>
+            <a href="{{ url_for('rrss_page') }}">RSS</a>
+        </div>
+        <a href="{{ url_for('logout') }}" style="color: red;">Logout</a>
+    </div>
+
+    <div class="container">
+        <h2 class="text-center">Facebook Links</h2>
+
+        <!-- Facebook Filter -->
+        <div class="filters">
+            <label for="facebookFilter">Filter by Page:</label>
+            <select id="facebookFilter">
+                <option value="">All</option>
+                {% for link in fb_links %}
+                <option value="{{ link.page_name }}">{{ link.page_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Facebook Table -->
+        <table class="table table-dark table-striped text-center">
+            <thead>
+                <tr>
+                    <th>Page Name</th>
+                    <th>Link</th>
+                    <th>Time Posted</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for link in fb_links %}
+                <tr data-page="{{ link.page_name }}">
+                    <td>{{ link.page_name }}</td>
+                    <td><a href="{{ link.link }}" target="_blank" class="text-light">View</a></td>
+                    <td>{{ link.timestamp }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById("facebookFilter").addEventListener("change", function() {
+            let filterValue = this.value.toLowerCase();
+            let rows = document.querySelectorAll("table tbody tr[data-page]");
+            
+            rows.forEach(row => {
+                row.style.display = filterValue === "" || row.getAttribute("data-page").toLowerCase() === filterValue ? "" : "none";
+            });
+        });
+    </script>
+</body>
+</html>
