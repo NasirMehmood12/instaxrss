@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram & Facebook Links</title>
+    <title>Instagram Posts</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-/*             background: #0d0d0d; */
             background: linear-gradient(to bottom right, #003366 0%, #ff00ff 100%);
             color: white;
             margin: 0;
@@ -72,7 +71,7 @@
     <!-- Navigation Bar -->
     <div class="navbar">
         <div>
-            <a href="{{ url_for('index') }}">Instagram & Facebook Links</a>
+            <a href="{{ url_for('fb') }}">Instagram Posts</a>
             <a href="{{ url_for('rss_page') }}">Google News</a>
             <a href="{{ url_for('rrss_page') }}">RSS</a>
         </div>
@@ -80,29 +79,20 @@
     </div>
 
     <div class="container">
-        <h2 class="text-center">Instagram & Facebook Links</h2>
-        
-        <!-- Dropdown Filters -->
+        <h2 class="text-center">Instagram Posts</h2>
+
+        <!-- Instagram Filter -->
         <div class="filters">
-            <label for="instagramFilter">Instagram:</label>
+            <label for="instagramFilter">Filter by Page:</label>
             <select id="instagramFilter">
                 <option value="">All</option>
                 {% for post in instagram_post %}
                 <option value="{{ post.page_name }}">{{ post.page_name }}</option>
                 {% endfor %}
             </select>
-            
-            <label for="facebookFilter">Facebook:</label>
-            <select id="facebookFilter">
-                <option value="">All</option>
-                {% for link in fb_links %}
-                <option value="{{ link.page_name }}">{{ link.page_name }}</option>
-                {% endfor %}
-            </select>
         </div>
 
         <!-- Instagram Cards -->
-        <h3 class="text-center">Instagram Posts</h3>
         <div class="grid">
             {% for post in instagram_post %}
             <div class="card" data-page="{{ post.page_name }}">
@@ -125,27 +115,6 @@
             </div>
             {% endfor %}
         </div>
-
-        <!-- Facebook Table -->
-        <h3 class="text-center mt-4">Facebook Links</h3>
-        <table class="table table-dark table-striped text-center">
-            <thead>
-                <tr>
-                    <th>Page Name</th>
-                    <th>Link</th>
-                    <th>Time Posted</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for link in fb_links %}
-                <tr data-page="{{ link.page_name }}">
-                    <td>{{ link.page_name }}</td>
-                    <td><a href="{{ link.link }}" target="_blank" class="text-light">View</a></td>
-                    <td>{{ link.timestamp }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 
     <script>
@@ -155,15 +124,6 @@
             
             cards.forEach(card => {
                 card.style.display = filterValue === "" || card.getAttribute("data-page").toLowerCase() === filterValue ? "block" : "none";
-            });
-        });
-        
-        document.getElementById("facebookFilter").addEventListener("change", function() {
-            let filterValue = this.value.toLowerCase();
-            let rows = document.querySelectorAll("table tbody tr[data-page]");
-            
-            rows.forEach(row => {
-                row.style.display = filterValue === "" || row.getAttribute("data-page").toLowerCase() === filterValue ? "" : "none";
             });
         });
     </script>
