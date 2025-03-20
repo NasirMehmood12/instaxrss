@@ -11,26 +11,6 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://instaxrss_user:QGBb5ALqiB
 USERNAME = "IMM"
 PASSWORD = "imm@geotv"
 
-# def get_instagram_links():
-#     """Fetch Instagram links from the database, including timestamps."""
-#     try:
-#         conn = psycopg2.connect(DATABASE_URL)
-#         cursor = conn.cursor()
-#         cursor.execute("SELECT page_name, link, timestamp AT TIME ZONE 'Asia/Karachi' FROM instagram_links ORDER BY timestamp DESC")
-#         data = cursor.fetchall()
-        
-#         results = [
-#             {"page_name": row[0], "link": row[1], "timestamp": row[2].strftime('%Y-%m-%d %H:%M:%S') if row[2] else None}
-#             for row in data
-#         ]
-
-#         cursor.close()
-#         conn.close()
-#         return results  
-#     except Exception as e:
-#         print(f"Error fetching Instagram links: {e}")
-#         return []
-
 
 
 def get_instagram_post():
@@ -75,23 +55,42 @@ def get_fb_links():
         print(f"Error fetching Facebook links: {e}")
         return []
 
-@app.route("/links")
+@app.route("/instagram")
 def index():
     """Show links only if logged in"""
     if "user" not in session:
         return redirect(url_for("login"))  
 
     instagram_post = get_instagram_post()
-    fb_links = get_fb_links()
-
+    
     instagram_pages = list(set([link["page_name"] for link in instagram_post]))  
-    facebook_pages = list(set([link["page_name"] for link in fb_links]))
+    
    
     return render_template("index.html", 
                            instagram_post=instagram_post, 
-                           fb_links=fb_links, 
+                         
                            instagram_pages=instagram_pages, 
+                           )
+
+
+@app.route("/facebook")
+def fb():
+    """Show links only if logged in"""
+    if "user" not in session:
+        return redirect(url_for("login"))  
+
+    
+    fb_links = get_fb_links()
+
+      
+    facebook_pages = list(set([link["page_name"] for link in fb_links]))
+   
+    return render_template("index.html", 
+                          
+                           fb_links=fb_links, 
+                        
                            facebook_pages=facebook_pages)
+
 
 @app.route("/rss")
 def rss_page():
