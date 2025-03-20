@@ -83,7 +83,7 @@
 </html>
  -->
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -160,5 +160,126 @@
             {% endfor %}
         </div>
     </div>
+</body>
+</html>
+ -->
+
+
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GNews Feed</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #121212; 
+            color: white; 
+            margin: 0; 
+        }
+        .navbar {
+            background-color: #1e1e1e;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        .navbar a:hover {
+            background: #3a3a3a;
+        }
+        .container {
+            padding: 20px;
+        }
+        .filters {
+            margin-bottom: 20px;
+        }
+        select {
+            padding: 10px;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .card a {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div>
+            <a href="{{ url_for('index') }}">Instagram Posts</a>
+            <a href="{{ url_for('fb') }}">Facebook Posts</a>
+            <a href="{{ url_for('rss_page') }}">Google News</a>
+            <a href="{{ url_for('rrss_page') }}">RSS</a>
+        </div>
+        <a href="{{ url_for('logout') }}" style="color: red;">Logout</a>
+    </div>
+    
+    <div class="container">
+        <h2>GNews Feed</h2>
+        <div class="filters">
+            <label for="countryFilter">Country:</label>
+            <select id="countryFilter">
+                <option value="">All</option>
+                {% for country in countries %}
+                <option value="{{ country }}">{{ country }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="categoryFilter">Category:</label>
+            <select id="categoryFilter">
+                <option value="">All</option>
+                {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="cards" id="newsContainer">
+            {% for link in rss_links %}
+            <div class="card" data-country="{{ link.country }}" data-category="{{ link.category }}">
+                <h3>{{ link.title }}</h3>
+                <p><strong>Country:</strong> {{ link.country }}</p>
+                <p><strong>Category:</strong> {{ link.category }}</p>
+                <a href="{{ link.link }}" target="_blank">Read more</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <script>
+    function applyFilters() {
+        let countryFilter = document.getElementById("countryFilter").value.toLowerCase();
+        let categoryFilter = document.getElementById("categoryFilter").value.toLowerCase();
+        let cards = document.querySelectorAll(".card");
+
+        cards.forEach(card => {
+            let countryMatch = countryFilter === "" || card.getAttribute("data-country").toLowerCase() === countryFilter;
+            let categoryMatch = categoryFilter === "" || card.getAttribute("data-category").toLowerCase() === categoryFilter;
+            
+            card.style.display = countryMatch && categoryMatch ? "block" : "none";
+        });
+    }
+
+    document.getElementById("countryFilter").addEventListener("change", applyFilters);
+    document.getElementById("categoryFilter").addEventListener("change", applyFilters);
+    </script>
 </body>
 </html>
