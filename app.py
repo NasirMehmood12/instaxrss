@@ -38,11 +38,11 @@ def get_instagram_post():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("SELECT page_name, link, post_image, caption, video_url, timestamp AT TIME ZONE 'Asia/Karachi' FROM instagram_post ORDER BY timestamp DESC")
+        cursor.execute("SELECT page_name, link, post_image, caption, timestamp AT TIME ZONE 'Asia/Karachi' FROM instagram_post ORDER BY timestamp DESC")
         data = cursor.fetchall()
         
         results = [
-            {"page_name": row[0], "link": row[1],"post_image":row[2],"caption":row[3],"video_url" : row[4], "timestamp": row[5].strftime('%Y-%m-%d %H:%M:%S') if row[5] else None,}
+            {"page_name": row[0], "link": row[1],"post_image":row[2],"caption":row[3], "timestamp": row[4].strftime('%Y-%m-%d %H:%M:%S') if row[4] else None,}
             for row in data
         ]
 
