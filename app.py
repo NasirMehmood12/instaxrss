@@ -85,7 +85,7 @@ def fb():
       
     facebook_pages = list(set([link["page_name"] for link in fb_links]))
    
-    return render_template("index.html", 
+    return render_template("fb.html", 
                           
                            fb_links=fb_links, 
                         
