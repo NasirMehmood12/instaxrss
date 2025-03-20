@@ -4,67 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram & Facebook Links</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            text-align: center; 
-            background-color: #FFFFFF;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0d0d0d;
+            color: white;
+            margin: 0;
+            padding: 0;
         }
         .navbar {
-            background-color: #524f4f;
-            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: linear-gradient(135deg, #240046, #9d0191);
+            padding: 15px 20px;
         }
         .navbar a {
             color: white;
             text-decoration: none;
-            padding: 10px 20px;
+            margin-right: 20px;
+            font-weight: bold;
         }
-        .navbar a:hover {
-            background-color: #87888a;
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            text-align: center;
+            padding-top: 20px;
+        }
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .card {
+            background: #1a1a1a;
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            width: 280px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 4px 15px rgba(90, 0, 122, 0.8);
+        }
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .card h3 {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+        .card p {
+            font-size: 14px;
+            color: #cccccc;
+        }
+        .card a {
+            display: inline-block;
+            text-decoration: none;
+            background: #5a007a;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 10px;
         }
         .filters {
             margin-bottom: 20px;
         }
         select {
-            padding: 10px;
-            margin: 0 10px;
-            font-size: 16px;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            padding: 20px;
-            max-width: 100%;
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            max-width: 600px;
-            border-collapse: collapse;
-            background: white;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            overflow-x: auto;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid black;
-            text-align: left;
-            white-space: nowrap;
-        }
-        th {
-            background-color: red;
-            color: white;
-        }
-        td img {
-            max-width: 500px;
-            height: auto;
-            display: block;
-            margin: auto;
+            padding: 5px;
         }
     </style>
 </head>
@@ -78,97 +92,46 @@
         <a href="{{ url_for('logout') }}" style="color: red;">Logout</a>
     </div>
 
-    <h2>Instagram & Facebook Links</h2>
-
-    <div class="filters">
-        <label for="instagramFilter">Instagram:</label>
-        <select id="instagramFilter">
-            <option value="">All</option>
-            {% for post in instagram_post %}
-            <option value="{{ post.page_name }}">{{ post.page_name }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="facebookFilter">Facebook:</label>
-        <select id="facebookFilter">
-            <option value="">All</option>
-            {% for link in fb_links %}
-            <option value="{{ link.page_name }}">{{ link.page_name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-
     <div class="container">
-        <div>
-            <h3>Instagram Links</h3>
-            <table id="instagramTable">
-                <tr>
-                    <th>Page Name</th>
-                    <th>Link</th>
-                    <th>Time Posted</th>
-                    <th>Caption</th>
-                    <th>Display Image</th>
-                </tr>
-                {% for post in instagram_post %}
-                <tr data-page="{{ post.page_name }}">
-                    <td>{{ post.page_name }}</td>
-                    <td><a href="{{ post.link }}" target="_blank">{{ post.link }}</a></td>
-                    <td>{{ post.timestamp }}</td>
-                    <td>{{ post.caption }}</td>
-                    <td>
-                        {% if post.post_image %}
-                            {% if ".mp4" in post.post_image %}
-                                <video width="100%" controls>
-                                    <source src="{{ post.post_image }}" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                            {% else %}
-                                <img src="{{ post.post_image }}" alt="Instagram Post">
-                            {% endif %}
-                        {% else %}
-                            <p>No media available</p>
-                        {% endif %}
-                    </td>
-                </tr>
+        <h2>Instagram & Facebook Links</h2>
+
+        <div class="filters">
+            <label for="instagramFilter">Instagram:</label>
+            <select id="instagramFilter">
+                <option value="">All</option>
+                {% for post in instagram_posts %}
+                <option value="{{ post.page_name }}">{{ post.page_name }}</option>
                 {% endfor %}
-            </table>
+            </select>
+
+            <label for="facebookFilter">Facebook:</label>
+            <select id="facebookFilter">
+                <option value="">All</option>
+                {% for link in fb_links %}
+                <option value="{{ link.page_name }}">{{ link.page_name }}</option>
+                {% endfor %}
+            </select>
         </div>
 
-        <div>
-            <h3>Facebook Links</h3>
-            <table id="facebookTable">
-                <tr>
-                    <th>Page Name</th>
-                    <th>Link</th>
-                    <th>Time Posted</th>
-                </tr>
-                {% for link in fb_links %}
-                <tr data-page="{{ link.page_name }}">
-                    <td>{{ link.page_name }}</td>
-                    <td><a href="{{ link.link }}" target="_blank">{{ link.link }}</a></td>
-                    <td>{{ link.timestamp }}</td>
-                </tr>
-                {% endfor %}
-            </table>
+        <div class="grid">
+            {% for post in instagram_posts %}
+            <div class="card" data-page="{{ post.page_name }}">
+                <img src="{{ post.post_image }}" alt="Instagram Post">
+                <h3>{{ post.page_name }}</h3>
+                <p>{{ post.caption }}</p>
+                <a href="{{ post.link }}" target="_blank">View Instagram Post</a>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
     <script>
         document.getElementById("instagramFilter").addEventListener("change", function() {
             let filterValue = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#instagramTable tr[data-page]");
+            let cards = document.querySelectorAll(".card[data-page]");
 
-            rows.forEach(row => {
-                row.style.display = filterValue === "" || row.getAttribute("data-page").toLowerCase() === filterValue ? "" : "none";
-            });
-        });
-
-        document.getElementById("facebookFilter").addEventListener("change", function() {
-            let filterValue = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#facebookTable tr[data-page]");
-
-            rows.forEach(row => {
-                row.style.display = filterValue === "" || row.getAttribute("data-page").toLowerCase() === filterValue ? "" : "none";
+            cards.forEach(card => {
+                card.style.display = filterValue === "" || card.getAttribute("data-page").toLowerCase() === filterValue ? "block" : "none";
             });
         });
     </script>
