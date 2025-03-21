@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RSS Feed</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
+        body {
+            font-family: Arial, sans-serif;
             background: linear-gradient(to bottom right, #003366 0%, #ff00ff 100%);
-            color: white; 
-            margin: 0; 
+            color: white;
+            margin: 0;
         }
         .navbar {
             display: flex;
@@ -39,24 +39,23 @@
             margin: 0 10px;
             font-size: 16px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
             background: #222;
-            color: white;
-            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
         }
-        th, td {
-            padding: 15px;
-            border: 1px solid white;
-            text-align: left;
-        }
-        th {
-            background: #333;
-        }
-        a {
+        .card a {
             color: #1e90ff;
             text-decoration: none;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -83,32 +82,26 @@
             </select>
         </div>
 
-        <table id="rrssTable">
-            <tr>
-                <th>Title</th>
-                <th>Link</th>
-                <th>PubDate</th>
-                <th>Channel</th>
-            </tr>
+        <div class="cards-container" id="rrssContainer">
             {% for item in rrss_links %}
-            <tr data-channel="{{ item.channel }}">
-                <td>{{ item.title }}</td>
-                <td><a href="{{ item.link }}" target="_blank">{{ item.link }}</a></td>
-                <td>{{ item.pubDate }}</td>
-                <td>{{ item.channel }}</td>
-            </tr>
+            <div class="card" data-channel="{{ item.channel }}">
+                <h3>{{ item.title }}</h3>
+                <p><strong>Published Date:</strong> {{ item.pubDate }}</p>
+                <p><strong>Channel:</strong> {{ item.channel }}</p>
+                <a href="{{ item.link }}" target="_blank">Read more</a>
+            </div>
             {% endfor %}
-        </table>
+        </div>
     </div>
 
     <script>
     function applyFilters() {
         let channelFilter = document.getElementById("channelFilter").value.toLowerCase();
-        let rows = document.querySelectorAll("#rrssTable tr[data-channel]");
+        let cards = document.querySelectorAll(".card");
 
-        rows.forEach(row => {
-            let channelMatch = channelFilter === "" || row.getAttribute("data-channel").toLowerCase() === channelFilter;
-            row.style.display = channelMatch ? "" : "none";
+        cards.forEach(card => {
+            let channelMatch = channelFilter === "" || card.getAttribute("data-channel").toLowerCase() === channelFilter;
+            card.style.display = channelMatch ? "block" : "none";
         });
     }
 
