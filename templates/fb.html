@@ -71,8 +71,8 @@
     <!-- Navigation Bar -->
     <div class="navbar">
         <div>
-            <a href="{{ url_for('index') }}">instagram Links</a>
-            <a href="{{ url_for('fb') }}">facebook links</a>
+            <a href="{{ url_for('index') }}">Instagram Links</a>
+            <a href="{{ url_for('fb') }}">Facebook Links</a>
             <a href="{{ url_for('rss_page') }}">Google News</a>
             <a href="{{ url_for('rrss_page') }}">RSS</a>
         </div>
@@ -80,38 +80,45 @@
     </div>
 
     <div class="container">
-        <h2 class="text-center">Instagram Posts</h2>
+        <h2 class="text-center">Facebook Links</h2>
 
-        <!-- Instagram Filter -->
+        <!-- Facebook Filter -->
         <div class="filters">
-            <label for="instagramFilter">Filter by Page:</label>
-            <select id="instagramFilter">
+            <label for="facebookFilter">Filter by Page:</label>
+            <select id="facebookFilter">
                 <option value="">All</option>
-                {% for post in instagram_post %}
-                <option value="{{ post.page_name }}">{{ post.page_name }}</option>
+                {% for link in fb_links %}
+                <option value="{{ link.page_name }}">{{ link.page_name }}</option>
                 {% endfor %}
             </select>
         </div>
 
-        <!-- Instagram Cards -->
+        <!-- Facebook Cards -->
         <div class="grid">
-    {% for post in instagram_post %}
-    <div class="card" data-page="{{ post.page_name }}">
-        {% if post.post_image and ".mp4" not in post.post_image %}
-            <img src="{{ post.post_image }}" alt="Instagram Post">
-        {% else %}
-            <p>No media available</p>
-        {% endif %}
-        <h3>{{ post.page_name }}</h3>
-        <p>{{ post.timestamp }}</p>
-        <a href="{{ post.link }}" target="_blank" class="btn btn-primary">View Post</a>
+            {% for link in fb_links %}
+            <div class="card" data-page="{{ link.page_name }}">
+                {% if link.post_image %}
+                    {% if ".mp4" in link.post_image %}
+                        <video controls>
+                            <source src="{{ link.post_image }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% else %}
+                        <img src="{{ link.post_image }}" alt="Facebook Post Image">
+                    {% endif %}
+                {% else %}
+                    <p>No media available</p>
+                {% endif %}
+                <h3>{{ link.page_name }}</h3>
+                <p><strong>Time Posted:</strong> {{ link.timestamp }}</p>
+                <a href="{{ link.link }}" target="_blank" class="btn btn-primary">View Post</a>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
-</div>
-
 
     <script>
-        document.getElementById("instagramFilter").addEventListener("change", function() {
+        document.getElementById("facebookFilter").addEventListener("change", function() {
             let filterValue = this.value.toLowerCase();
             let cards = document.querySelectorAll(".card[data-page]");
             
@@ -121,4 +128,3 @@
         });
     </script>
 </body>
-</html>
