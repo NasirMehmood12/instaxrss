@@ -40,11 +40,11 @@ def get_fb_links():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute('SELECT page_name,link,timestamp FROM fb_links')
+        cursor.execute('SELECT page_name,link,timestamp,post_image FROM fb_links')
         data = cursor.fetchall()
         
         results = [
-            {"link": row[1], "page_name": row[0], "timestamp": row[2] if row[1] else None}
+            {"link": row[1], "page_name": row[0], "timestamp": row[2] if row[1] else None, "post_image": row[4]}
             for row in data
         ]
 
