@@ -44,7 +44,7 @@ def get_fb_links():
         data = cursor.fetchall()
         
         results = [
-            {"link": row[1], "page_name": row[0], "post_image": row[4], "timestamp": row[2] if row[1] else None}
+            {"link": row[1], "page_name": row[0], "post_image": row[4], "timestamp": row[2] if row[2] else None}
             for row in data
         ]
 
