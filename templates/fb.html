@@ -95,27 +95,20 @@
 
         <!-- Instagram Cards -->
         <div class="grid">
-            {% for post in instagram_post %}
-            <div class="card" data-page="{{ post.page_name }}">
-                {% if post.post_image %}
-<!--                     {% if ".mp4" in post.post_image %}
-                        <video controls>
-                            <source src="{{ post.post_image }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video> -->
-                        <img src="{{ post.post_image }}" alt="Instagram Post">
-                    {% endif %}
-                {% else %}
-                    <p>No media available</p>
-                {% endif %}
-                <h3>{{ post.page_name }}</h3>
-<!--                 <p>{{ post.caption }}</p> -->
-                <p>{{ post.timestamp }}</p>
-                <a href="{{ post.link }}" target="_blank" class="btn btn-primary">View Post</a>
-            </div>
-            {% endfor %}
-        </div>
+    {% for post in instagram_post %}
+    <div class="card" data-page="{{ post.page_name }}">
+        {% if post.post_image and ".mp4" not in post.post_image %}
+            <img src="{{ post.post_image }}" alt="Instagram Post">
+        {% else %}
+            <p>No media available</p>
+        {% endif %}
+        <h3>{{ post.page_name }}</h3>
+        <p>{{ post.timestamp }}</p>
+        <a href="{{ post.link }}" target="_blank" class="btn btn-primary">View Post</a>
     </div>
+    {% endfor %}
+</div>
+
 
     <script>
         document.getElementById("instagramFilter").addEventListener("change", function() {
