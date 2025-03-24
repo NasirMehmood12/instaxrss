@@ -6,6 +6,23 @@
     <title>Trending Searches</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #003366 0%, #ff00ff 100%);
+            color: white;
+        }
+        .card {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+        .card a {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-4">
@@ -32,43 +49,32 @@
             </div>
         </div>
         
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Country</th>
-                    <th>Category</th>
-                    <th>Trending Search</th>
-                    <th>Search Volume</th>
-                    <th>Change (%)</th>
-                    <th>Started</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="trendsTable">
-                {% for trend in trends %}
-                <tr>
-                    <td>{{ trend.country }}</td>
-                    <td>{{ trend.category }}</td>
-                    <td>{{ trend.trending_search }}</td>
-                    <td>{{ trend.search_volume }}</td>
-                    <td>{{ trend.change_percentage }}</td>
-                    <td>{{ trend.started }}</td>
-                    <td>{{ trend.status }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="row" id="trendsContainer">
+            {% for trend in trends %}
+            <div class="col-md-4 trend-card" data-country="{{ trend.country }}" data-category="{{ trend.category }}">
+                <div class="card">
+                    <h4>{{ trend.trending_search }}</h4>
+                    <p><strong>Country:</strong> {{ trend.country }}</p>
+                    <p><strong>Category:</strong> {{ trend.category }}</p>
+                    <p><strong>Search Volume:</strong> {{ trend.search_volume }}</p>
+                    <p><strong>Change (%):</strong> {{ trend.change_percentage }}</p>
+                    <p><strong>Started:</strong> {{ trend.started }}</p>
+                    <p><strong>Status:</strong> {{ trend.status }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 
     <script>
         $(document).ready(function () {
             $("#countryFilter, #categoryFilter").on("change", function () {
-                var selectedCountry = $("#countryFilter").val();
-                var selectedCategory = $("#categoryFilter").val();
+                var selectedCountry = $("#countryFilter").val().toLowerCase();
+                var selectedCategory = $("#categoryFilter").val().toLowerCase();
 
-                $("#trendsTable tr").filter(function () {
-                    var countryMatch = selectedCountry === "" || $(this).find("td:eq(0)").text() === selectedCountry;
-                    var categoryMatch = selectedCategory === "" || $(this).find("td:eq(1)").text() === selectedCategory;
+                $(".trend-card").each(function () {
+                    var countryMatch = selectedCountry === "" || $(this).data("country").toLowerCase() === selectedCountry;
+                    var categoryMatch = selectedCategory === "" || $(this).data("category").toLowerCase() === selectedCategory;
                     $(this).toggle(countryMatch && categoryMatch);
                 });
             });
