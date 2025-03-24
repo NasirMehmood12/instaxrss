@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending Searches</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">🔥 Trending Searches 🔥</h2>
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="countryFilter" class="form-label">Filter by Country:</label>
+                <select id="countryFilter" class="form-select">
+                    <option value="">All</option>
+                    {% for country in countries %}
+                        <option value="{{ country }}">{{ country }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="categoryFilter" class="form-label">Filter by Category:</label>
+                <select id="categoryFilter" class="form-select">
+                    <option value="">All</option>
+                    {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Country</th>
+                    <th>Category</th>
+                    <th>Trending Search</th>
+                    <th>Search Volume</th>
+                    <th>Change (%)</th>
+                    <th>Started</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="trendsTable">
+                {% for trend in trends %}
+                <tr>
+                    <td>{{ trend.country }}</td>
+                    <td>{{ trend.category }}</td>
+                    <td>{{ trend.trending_search }}</td>
+                    <td>{{ trend.search_volume }}</td>
+                    <td>{{ trend.change_percentage }}</td>
+                    <td>{{ trend.started }}</td>
+                    <td>{{ trend.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#countryFilter, #categoryFilter").on("change", function () {
+                var selectedCountry = $("#countryFilter").val();
+                var selectedCategory = $("#categoryFilter").val();
+
+                $("#trendsTable tr").filter(function () {
+                    var countryMatch = selectedCountry === "" || $(this).find("td:eq(0)").text() === selectedCountry;
+                    var categoryMatch = selectedCategory === "" || $(this).find("td:eq(1)").text() === selectedCategory;
+                    $(this).toggle(countryMatch && categoryMatch);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
