@@ -141,7 +141,7 @@ def trends_page():
         cursor.close()
         conn.close()
 
-        rss_data = [
+        trends = [
             {"country": row[0], "category": row[1], "trending_search": row[2], "search_volume": row[3], "change_percentage": row[4], "started": row[5], "status": row[6]}
             for row in rss_links
         ]
