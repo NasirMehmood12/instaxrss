@@ -122,6 +122,52 @@ def rss_page():
         return redirect(url_for("index"))
 
 
+
+
+
+
+
+@app.route("/trends")
+def trends_page():
+    """Show RSS links"""
+    if "user" not in session:
+        return redirect(url_for("login"))
+
+    try:
+        conn = psycopg2.connect(DATABASE_URL)
+        cursor = conn.cursor()
+        cursor.execute("SELECT country, category, trending_search, search_volume, change_percentage, started, status FROM trending_data ")
+        rss_links = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        rss_data = [
+            {"country": row[0], "category": row[1], "trending_search": row[2], "search_volume": row[3], "change_percentage": row[4], "started": row[5], "status": row[6]}
+            for row in rss_links
+        ]
+
+        countries = list(set([trend["country"] for trend in trends]))
+        categories = list(set([trend["category"] for trend in trends]))
+
+        return render_template("trends.html", trends=trends, countries=countries, categories=categories)
+    except Exception as e:
+        print(f"Error fetching trending data: {e}")
+        return redirect(url_for("index"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route("/rrss")
 def rrss_page():
     """Show RRSS links"""
