@@ -164,11 +164,15 @@
         .container {
             margin: 20px auto;
             max-width: 800px;
-            padding: 20px;
+            padding: 0px;
+            margin-left: 20px;
+            margin-right: 20px;
         }
         .filters {
-            text-align: center;
-            margin-bottom: 20px;
+             text-align: center;
+             margin-bottom: 25px;
+             margin-left: -167px;
+             margin-top: 25px;
         }
         select {
             padding: 10px;
@@ -177,7 +181,7 @@
         }
         .list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             padding: 0;
             list-style: none;
@@ -187,6 +191,7 @@
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width:580px;
         }
         .list-item h4 {
             margin: 0 0 10px;
