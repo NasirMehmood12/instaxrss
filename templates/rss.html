@@ -350,7 +350,32 @@
             margin: 0 10px;
             font-size: 16px;
         }
-        .list {
+
+
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+}
+
+.list-item {
+    background: #222;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+
+
+
+        
+/*         .list {
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -362,7 +387,7 @@
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
+        } */
         .list-item a {
             color: #1e90ff;
             text-decoration: none;
