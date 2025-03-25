@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -70,7 +70,6 @@
 <body>
 
 
-<!-- Navigation Bar -->
     <div class="navbar">
         <div>
             <a href="{{ url_for('index') }}">instagram Links</a>
@@ -122,6 +121,141 @@
             </div>
             {% endfor %}
         </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#countryFilter, #categoryFilter").on("change", function () {
+                var selectedCountry = $("#countryFilter").val().toLowerCase();
+                var selectedCategory = $("#categoryFilter").val().toLowerCase();
+
+                $(".trend-card").each(function () {
+                    var countryMatch = selectedCountry === "" || $(this).data("country").toLowerCase() === selectedCountry;
+                    var categoryMatch = selectedCategory === "" || $(this).data("category").toLowerCase() === selectedCategory;
+                    $(this).toggle(countryMatch && categoryMatch);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+ -->
+
+
+
+
+
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GNews Feed</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: linear-gradient(to bottom right, #003366 0%, #ff00ff 100%);
+            color: white; 
+            margin: 0; 
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #240046, #9d0191);
+            padding: 15px;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            margin: 20px auto;
+            padding: 0px;
+            max-width: 800px;
+        }
+        .filters {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        select {
+            padding: 10px;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+        .list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            list-style: none;
+            padding: 0;
+        }
+        .list-item {
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .list-item a {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div>
+            <a href="{{ url_for('index') }}">Instagram Links</a>
+            <a href="{{ url_for('trends_page') }}">Trends Page</a>
+            <a href="{{ url_for('fb') }}">Facebook Links</a>
+            <a href="{{ url_for('rss_page') }}">Google News</a>
+            <a href="{{ url_for('rrss_page') }}">RSS</a>
+        </div>
+        <a href="{{ url_for('logout') }}" style="color: red;">Logout</a>
+    </div>
+
+    <div class="container mt-4">
+        <h2 class="text-center">Trending Searches</h2>
+        
+        <div class="filters">
+            <label for="countryFilter">Filter by Country:</label>
+            <select id="countryFilter">
+                <option value="">All</option>
+                {% for country in countries %}
+                    <option value="{{ country }}">{{ country }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="categoryFilter">Filter by Category:</label>
+            <select id="categoryFilter">
+                <option value="">All</option>
+                {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <ul class="list" id="trendsContainer">
+            {% for trend in trends %}
+            <li class="list-item trend-card" data-country="{{ trend.country }}" data-category="{{ trend.category }}">
+                <h4>{{ trend.trending_search }}</h4>
+                <p><strong>Country:</strong> {{ trend.country }}</p>
+                <p><strong>Category:</strong> {{ trend.category }}</p>
+                <p><strong>Search Volume:</strong> {{ trend.search_volume }}</p>
+                <p><strong>Change (%):</strong> {{ trend.change_percentage }}</p>
+                <p><strong>Started:</strong> {{ trend.started }}</p>
+                <p><strong>Status:</strong> {{ trend.status }}</p>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 
     <script>
