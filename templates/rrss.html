@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -59,6 +59,107 @@
         }
     </style>
 </head>
+-->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GNews Feed</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: linear-gradient(to bottom right, #003366 0%, #ff00ff 100%);
+            color: white; 
+            margin: 0; 
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #240046, #9d0191);
+            padding: 15px;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            margin: 20px auto;
+            padding: 0px;
+            max-width: 800px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        .filters {
+            margin-bottom: 30px;
+            text-align: center;
+            margin-left: 315px;
+        }
+        select {
+            padding: 10px;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+
+
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+}
+
+.list-item {
+    background: #222;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+li.list-item {
+    width: 580px;
+}
+
+
+
+
+
+
+        
+/*         .list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            list-style: none;
+            padding: 0;
+        }
+        .list-item {
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        } */
+        .list-item a {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+
+
 <body>
     <div class="navbar">
         <div>
