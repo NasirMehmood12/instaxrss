@@ -59,6 +59,58 @@
         }
     </style>
 </head>
+
+
+<body>
+    <div class="navbar">
+        <div>
+            <a href="{{ url_for('index') }}">Instagram Posts</a>
+            <a href="{{ url_for('fb') }}">Facebook Posts</a>
+            <a href="{{ url_for('rss_page') }}">Google News</a>
+            <a href="{{ url_for('rrss_page') }}">RSS</a>
+        </div>
+        <a href="{{ url_for('logout') }}" style="color: red;">Logout</a>
+    </div>
+
+    <div class="container">
+        <h2>RSS Feed</h2>
+        <div class="filters">
+            <label for="channelFilter">Channel:</label>
+            <select id="channelFilter">
+                <option value="">All</option>
+                {% for channel in channels %}
+                <option value="{{ channel }}">{{ channel }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="cards-container" id="rrssContainer">
+            {% for item in rrss_links %}
+            <div class="card" data-channel="{{ item.channel }}">
+                <h3>{{ item.title }}</h3>
+                <p><strong>Published Date:</strong> {{ item.pubDate }}</p>
+                <p><strong>Channel:</strong> {{ item.channel }}</p>
+                <a href="{{ item.link }}" target="_blank">Read more</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+    function applyFilters() {
+        let channelFilter = document.getElementById("channelFilter").value.toLowerCase();
+        let cards = document.querySelectorAll(".card");
+
+        cards.forEach(card => {
+            let channelMatch = channelFilter === "" || card.getAttribute("data-channel").toLowerCase() === channelFilter;
+            card.style.display = channelMatch ? "block" : "none";
+        });
+    }
+
+    document.getElementById("channelFilter").addEventListener("change", applyFilters);
+    </script>
+</body>
+</html>
 -->
 
 
@@ -69,7 +121,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GNews Feed</title>
+    <title>RSS Feed</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -110,56 +162,25 @@
             margin: 0 10px;
             font-size: 16px;
         }
-
-
-
-.list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    list-style: none;
-    padding: 0;
-}
-
-.list-item {
-    background: #222;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-li.list-item {
-    width: 580px;
-}
-
-
-
-
-
-
-        
-/*         .list {
-            display: flex;
-            flex-direction: column;
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             list-style: none;
             padding: 0;
         }
-        .list-item {
+        .card {
             background: #222;
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        } */
-        .list-item a {
+        }
+        .card a {
             color: #1e90ff;
             text-decoration: none;
         }
     </style>
 </head>
-
-
-
 <body>
     <div class="navbar">
         <div>
