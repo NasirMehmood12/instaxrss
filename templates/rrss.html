@@ -206,18 +206,37 @@
             </select>
         </div>
 
-        <div class="cards-container" id="rrssContainer">
+<!--         <div class="cards-container" id="rrssContainer">
             {% for item in rrss_links %}
             <div class="card" data-channel="{{ item.channel }}">
                 <h3>{{ item.title }}</h3>
                 <p><strong>Published Date:</strong> {{ item.pubDate }}</p>
                 <p><strong>Channel:</strong> {{ item.channel }}</p>
                 <a href="{{ item.link }}" target="_blank">Read more</a>
+                <p><strong>Thumbnail:</strong> {{ item.thumbnail }}</p>
             </div>
             {% endfor %}
         </div>
     </div>
+-->
 
+
+<div class="cards-container" id="rrssContainer">
+    {% for item in rrss_links %}
+    <div class="card" data-channel="{{ item.channel }}">
+        {% if item.thumbnail %}
+            <img src="{{ item.thumbnail }}" alt="Thumbnail" style="width: 100px; height: auto; border-radius: 5px; margin-bottom: 10px;">
+        {% endif %}
+        <h3>{{ item.title }}</h3>
+        <p><strong>Published Date:</strong> {{ item.pubDate }}</p>
+        <p><strong>Channel:</strong> {{ item.channel }}</p>
+        <a href="{{ item.link }}" target="_blank">Read more</a>
+    </div>
+    {% endfor %}
+</div>
+
+
+        
     <script>
     function applyFilters() {
         let channelFilter = document.getElementById("channelFilter").value.toLowerCase();
