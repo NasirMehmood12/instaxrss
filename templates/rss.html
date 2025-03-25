@@ -164,9 +164,9 @@
 </html>
  -->
 
+-----------column cards
 
-
- <!DOCTYPE html>
+<!--  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -297,6 +297,132 @@
             let categoryMatch = categoryFilter === "" || card.getAttribute("data-category").toLowerCase() === categoryFilter;
             
             card.style.display = countryMatch && categoryMatch ? "block" : "none";
+        });
+    }
+
+    document.getElementById("countryFilter").addEventListener("change", applyFilters);
+    document.getElementById("categoryFilter").addEventListener("change", applyFilters);
+    </script>
+</body>
+</html>
+ -->
+
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GNews Feed</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: linear-gradient(to bottom right, #003366 0%, #ff00ff 100%);
+            color: white; 
+            margin: 0; 
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #240046, #9d0191);
+            padding: 15px;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            margin: 20px auto;
+            padding: 30px;
+            max-width: 800px;
+        }
+        .filters {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        select {
+            padding: 10px;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            list-style: none;
+            padding: 0;
+        }
+        .list-item {
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .list-item a {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div>
+            <a href="{{ url_for('index') }}">Instagram Posts</a>
+            <a href="{{ url_for('fb') }}">Facebook Posts</a>
+            <a href="{{ url_for('rss_page') }}">Google News</a>
+            <a href="{{ url_for('rrss_page') }}">RSS</a>
+        </div>
+        <a href="{{ url_for('logout') }}" style="color: red;">Logout</a>
+    </div>
+    
+    <div class="container">
+        <h2>GNews Feed</h2>
+        <div class="filters">
+            <label for="countryFilter">Country:</label>
+            <select id="countryFilter">
+                <option value="">All</option>
+                {% for country in countries %}
+                <option value="{{ country }}">{{ country }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="categoryFilter">Category:</label>
+            <select id="categoryFilter">
+                <option value="">All</option>
+                {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <ul class="list" id="newsContainer">
+            {% for link in rss_links %}
+            <li class="list-item" data-country="{{ link.country }}" data-category="{{ link.category }}">
+                <h3>{{ link.title }}</h3>
+                <p><strong>Country:</strong> {{ link.country }}</p>
+                <p><strong>Category:</strong> {{ link.category }}</p>
+                <a href="{{ link.link }}" target="_blank">Read more</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <script>
+    function applyFilters() {
+        let countryFilter = document.getElementById("countryFilter").value.toLowerCase();
+        let categoryFilter = document.getElementById("categoryFilter").value.toLowerCase();
+        let items = document.querySelectorAll(".list-item");
+
+        items.forEach(item => {
+            let countryMatch = countryFilter === "" || item.getAttribute("data-country").toLowerCase() === countryFilter;
+            let categoryMatch = categoryFilter === "" || item.getAttribute("data-category").toLowerCase() === categoryFilter;
+            
+            item.style.display = countryMatch && categoryMatch ? "block" : "none";
         });
     }
 
