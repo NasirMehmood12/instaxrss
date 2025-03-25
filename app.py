@@ -177,13 +177,13 @@ def rrss_page():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("SELECT channel, title, link, pubDate FROM rrss_links ORDER BY pubdate DESC")
+        cursor.execute("SELECT channel, title, link, pubDate,thumbnail FROM rrss_links ORDER BY pubdate DESC")
         rrss_links = cursor.fetchall()
         cursor.close()
         conn.close()
 
         rrss_data = [
-            {"channel": row[0], "title": row[1], "link": row[2], "pubDate": row[3]}
+            {"channel": row[0], "title": row[1], "link": row[2], "pubDate": row[3],"thumbnail": row[4]}
             for row in rrss_links
         ]
 
