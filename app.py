@@ -209,19 +209,56 @@ def get_selection(card_id: str, user_id: str):
     result = cursor.fetchone()
     return {"selected_option": result[0] if result else None}
 
-# API to save or update selection
-@app.post("/save_selection/")
-def save_selection(card_id: str, user_id: str, selected_option: str):
-    conn = psycopg2.connect(DATABASE_URL)
-    cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO card_selections (card_id, user_id, selected_option)
-        VALUES (%s, %s, %s)
-        ON CONFLICT (card_id, user_id) DO UPDATE 
-        SET selected_option = EXCLUDED.selected_option
-    """, (card_id, user_id, selected_option))
-    conn.commit()
-    return {"message": "Selection saved"}
+
+
+
+@app.route("/save_selection/", methods=["POST"])
+def save_selection():
+    try:
+        data = request.json  # Get data from JSON request
+        card_id = data.get("card_id")
+        user_id = data.get("user_id")
+        selected_option = data.get("selected_option")
+
+        if not card_id or not user_id or not selected_option:
+            return jsonify({"error": "Missing required fields"}), 400
+
+        conn = psycopg2.connect(DATABASE_URL)
+        cursor = conn.cursor()
+        
+        cursor.execute("""
+            INSERT INTO card_selections (card_id, user_id, selected_option)
+            VALUES (%s, %s, %s)
+            ON CONFLICT (card_id, user_id) 
+            DO UPDATE SET selected_option = EXCLUDED.selected_option
+        """, (card_id, user_id, selected_option))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": "Selection saved"}), 200
+    except Exception as e:
+        print(f"Error saving selection: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+
+
+
+# # API to save or update selection
+# @app.post("/save_selection/")
+# def save_selection(card_id: str, user_id: str, selected_option: str):
+#     conn = psycopg2.connect(DATABASE_URL)
+#     cursor = conn.cursor()
+#     cursor.execute("""
+#         INSERT INTO card_selections (card_id, user_id, selected_option)
+#         VALUES (%s, %s, %s)
+#         ON CONFLICT (card_id, user_id) DO UPDATE 
+#         SET selected_option = EXCLUDED.selected_option
+#     """, (card_id, user_id, selected_option))
+#     conn.commit()
+#     return {"message": "Selection saved"}
 
 
 
