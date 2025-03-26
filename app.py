@@ -197,8 +197,14 @@ def rrss_page():
 
 
 
+
+
+
+
 @app.get("/get_selection/")
 def get_selection(card_id: str, user_id: str):
+    conn = psycopg2.connect(DATABASE_URL)
+    cursor = conn.cursor()
     cursor.execute("SELECT selected_option FROM card_selections WHERE card_id = %s AND user_id = %s", (card_id, user_id))
     result = cursor.fetchone()
     return {"selected_option": result[0] if result else None}
@@ -206,6 +212,8 @@ def get_selection(card_id: str, user_id: str):
 # API to save or update selection
 @app.post("/save_selection/")
 def save_selection(card_id: str, user_id: str, selected_option: str):
+    conn = psycopg2.connect(DATABASE_URL)
+    cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO card_selections (card_id, user_id, selected_option)
         VALUES (%s, %s, %s)
