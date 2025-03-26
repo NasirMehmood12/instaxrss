@@ -306,16 +306,17 @@ select {
 
         
     <script>
-    function applyFilters() {
-        let channelFilter = document.getElementById("channelFilter").value.toLowerCase();
-        let cards = document.querySelectorAll(".card");
+   function applyFilters() {
+    let channelFilter = document.getElementById("channelFilter").value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
 
-        cards.forEach(card => {
-            let channelMatch = channelFilter === "" || card.getAttribute("data-channel").toLowerCase() === channelFilter;
-            card.style.display = channelMatch ? "block" : "none";
-        });
+    cards.forEach(card => {
+        let channelMatch = channelFilter === "" || card.getAttribute("data-channel").toLowerCase() === channelFilter;
+        card.style.display = channelMatch ? "block" : "none";
+    });
+}
 
-     document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     const dropdowns = document.querySelectorAll(".cardDropdown");
 
     dropdowns.forEach(dropdown => {
@@ -345,12 +346,10 @@ select {
             .catch(err => console.error("❌ Save error:", err));
         });
     });
-});
-
-   
-    }
 
     document.getElementById("channelFilter").addEventListener("change", applyFilters);
+});
+
     </script>
 </body>
 </html>
