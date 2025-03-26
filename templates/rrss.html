@@ -255,13 +255,12 @@ select {
     </div>
 -->
 
-
+<!-- 
 <div class="cards-container" id="rrssContainer">
     {% for item in rrss_links %}
     <div class="card" data-channel="{{ item.channel }}">
         {% if item.thumbnail %}
-<!--             <img src="{{ item.thumbnail }}" alt="Thumbnail" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
- -->
+
         <img src="{{ item.thumbnail }}" alt="Thumbnail" style="width: 580px; height: 300px; object-fit: cover; margin-bottom: 10px;">
 
         {% endif %}
@@ -271,7 +270,38 @@ select {
         <a href="{{ item.link }}" target="_blank">Read more</a>
     </div>
     {% endfor %}
+</div> -->
+
+
+
+
+
+
+<div class="cards-container" id="rrssContainer">
+    {% for item in rrss_links %}
+    <div class="card" data-channel="{{ item.channel }}" data-id="{{ loop.index }}">
+        {% if item.thumbnail %}
+        <img src="{{ item.thumbnail }}" alt="Thumbnail" style="width: 580px; height: 300px; object-fit: cover; margin-bottom: 10px;">
+        {% endif %}
+        <h3>{{ item.title }}</h3>
+        <p><strong>Published Date:</strong> {{ item.pubDate }}</p>
+        <p><strong>Channel:</strong> {{ item.channel }}</p>
+        <a href="{{ item.link }}" target="_blank">Read more</a>
+
+        <!-- Dropdown inside the card -->
+        <label for="cardDropdown_{{ loop.index }}">Select Option:</label>
+        <select id="cardDropdown_{{ loop.index }}" class="cardDropdown">
+            <option value="Option1">Option 1</option>
+            <option value="Option2">Option 2</option>
+            <option value="Option3">Option 3</option>
+        </select>
+    </div>
+    {% endfor %}
 </div>
+
+
+
+    
 
 
         
