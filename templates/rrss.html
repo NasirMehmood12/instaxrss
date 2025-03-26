@@ -314,6 +314,34 @@ select {
             let channelMatch = channelFilter === "" || card.getAttribute("data-channel").toLowerCase() === channelFilter;
             card.style.display = channelMatch ? "block" : "none";
         });
+
+     document.addEventListener("DOMContentLoaded", function () {
+    const dropdowns = document.querySelectorAll(".cardDropdown");
+
+    dropdowns.forEach(dropdown => {
+        const cardId = dropdown.closest(".card").getAttribute("data-card-id");
+        const userId = dropdown.closest(".card").getAttribute("data-user-id");
+
+        // Fetch saved selection from the database
+        fetch(`/get_selection/?card_id=${cardId}&user_id=${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.selected_option) {
+                    dropdown.value = data.selected_option; // Restore saved selection
+                }
+            });
+
+        // Save selection on change
+        dropdown.addEventListener("change", function () {
+            fetch("/save_selection/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ card_id: cardId, user_id: userId, selected_option: this.value })
+            });
+        });
+    });
+});
+   
     }
 
     document.getElementById("channelFilter").addEventListener("change", applyFilters);
