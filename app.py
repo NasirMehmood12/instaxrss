@@ -196,6 +196,29 @@ def rrss_page():
 
 
 
+
+@app.get("/get_selection/")
+def get_selection(card_id: str, user_id: str):
+    cursor.execute("SELECT selected_option FROM card_selections WHERE card_id = %s AND user_id = %s", (card_id, user_id))
+    result = cursor.fetchone()
+    return {"selected_option": result[0] if result else None}
+
+# API to save or update selection
+@app.post("/save_selection/")
+def save_selection(card_id: str, user_id: str, selected_option: str):
+    cursor.execute("""
+        INSERT INTO card_selections (card_id, user_id, selected_option)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (card_id, user_id) DO UPDATE 
+        SET selected_option = EXCLUDED.selected_option
+    """, (card_id, user_id, selected_option))
+    conn.commit()
+    return {"message": "Selection saved"}
+
+
+
+
+
 @app.route("/", methods=["GET", "POST"])
 def login():
     """Login Page"""
