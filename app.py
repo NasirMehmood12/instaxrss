@@ -238,8 +238,8 @@ def save_selection():
         cursor.execute("""
             INSERT INTO card_selections (card_id, selected_option)
             VALUES (%s, %s)
-            ON CONFLICT (card_id)
-            DO UPDATE SET selected_option = EXCLUDED.selected_option
+            ON CONFLICT 
+            DO NOTHING
         """, (card_id, selected_option))
 
         conn.commit()
