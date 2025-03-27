@@ -371,8 +371,10 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(err => console.error("❌ Fetch error:", err));
 
-        // Save selection on change
+        // Save selection on valid change
         dropdown.addEventListener("change", function () {
+            if (!this.value) return; // Ignore empty selections
+
             fetch("/save_selection/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -387,6 +389,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
 
 
     </script>
