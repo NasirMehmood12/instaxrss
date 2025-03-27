@@ -277,7 +277,7 @@ select {
 
 
 
-<!-- <div class="card" data-card-id="{{ loop.index }}" data-user-id="{{ session['user'] }}">
+<div class="card" data-card-id="{{ loop.index }}" data-user-id="{{ session['user'] }}">
 <div class="cards-container" id="rrssContainer">
     {% for item in rrss_links %}
     <div class="card" data-channel="{{ item.channel }}" data-id="{{ loop.index }}">
@@ -300,29 +300,6 @@ select {
     {% endfor %}
     </div>
 
-</div> -->
-
-
-
-
-
-<div class="cards-container" id="rrssContainer">
-  {% for item in rrss_links %}
-  <div class="card" data-card-id="{{ loop.index }}" data-user-id="{{ session['user'] }}" data-channel="{{ item.channel }}">
-      {% if item.thumbnail %}
-      <img src="{{ item.thumbnail }}" alt="Thumbnail" style="width: 580px; height: 300px; object-fit: cover; margin-bottom: 10px;">
-      {% endif %}
-      <h3>{{ item.title }}</h3>
-      <p><strong>Published Date:</strong> {{ item.pubDate }}</p>
-      <p><strong>Channel:</strong> {{ item.channel }}</p>
-      <a href="{{ item.link }}" target="_blank">Read more</a>
-      <select id="cardDropdown_{{ loop.index }}" class="cardDropdown">
-          <option value="Option1">Hiba</option>
-          <option value="Option2">Mukhtar Ahmed</option>
-          <option value="Option3">Shahzad hameed</option>
-      </select>
-  </div>
-  {% endfor %}
 </div>
 
 
