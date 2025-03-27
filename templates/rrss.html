@@ -383,7 +383,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
         console.log("✅ Saved:", data);
         // Reload page after saving selection
-        location.reload();
+        windows.location.reload();
     })
         .catch(err => console.error("❌ Save error:", err));
     });
