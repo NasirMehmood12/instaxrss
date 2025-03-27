@@ -358,7 +358,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const dropdowns = document.querySelectorAll(".cardDropdown");
 
     dropdowns.forEach(dropdown => {
-        // Get card id from the closest .card
         const cardId = dropdown.closest(".card").getAttribute("data-card-id");
 
         // Fetch saved selection for this card
@@ -374,19 +373,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Save selection on change
         dropdown.addEventListener("change", function () {
-    fetch("/save_selection/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ card_id: cardId, selected_option: this.value })
-    })
-        .then(res => res.json())
-        .then(data => {
-        console.log("✅ Saved:", data);
-        // Reload page after saving selection
-        windows.location.reload();
-    })
-        .catch(err => console.error("❌ Save error:", err));
-    });
+            fetch("/save_selection/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ card_id: cardId, selected_option: this.value })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("✅ Saved:", data);
+                this.selectedIndex = 0; // Reset dropdown to "Select"
+            })
+            .catch(err => console.error("❌ Save error:", err));
+        });
     });
 });
 
