@@ -203,18 +203,44 @@ def rrss_page():
 
 
 
+# @app.get("/get_selection/")
+# def get_selection():
+#     card_id = request.args.get("card_id")
+#     if not card_id:
+#         return jsonify({"selected_option": None})
+#     conn = psycopg2.connect(DATABASE_URL)
+#     cursor = conn.cursor()
+#     cursor.execute("SELECT selected_option FROM card_selections WHERE card_id = %s", (card_id,))
+#     result = cursor.fetchone()
+#     cursor.close()
+#     conn.close()
+#     return jsonify({"selected_option": None})
+
+
+
+
+
+
 @app.get("/get_selection/")
 def get_selection():
     card_id = request.args.get("card_id")
     if not card_id:
-        return jsonify({"selected_option": None})
+        return jsonify({"selected_options": []})  # Return empty list if no card_id
+
     conn = psycopg2.connect(DATABASE_URL)
     cursor = conn.cursor()
+    
+    # Fetch all selected options for the given card_id
     cursor.execute("SELECT selected_option FROM card_selections WHERE card_id = %s", (card_id,))
-    result = cursor.fetchone()
+    results = cursor.fetchall()
+    
     cursor.close()
     conn.close()
-    return jsonify({"selected_option": None})
+
+    # Extract names from query results and return as a list
+    selected_options = [row[0] for row in results]
+    return jsonify({"selected_options": selected_options})
+
 
 
 
