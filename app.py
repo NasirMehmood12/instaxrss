@@ -238,7 +238,7 @@ def save_selection():
         cursor.execute("""
             INSERT INTO card_selections (card_id, selected_option)
             VALUES (%s, %s)
-            ON CONFLICT 
+            ON CONFLICT (card_id, selected_option)
             DO NOTHING
         """, (card_id, selected_option))
 
