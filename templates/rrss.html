@@ -277,7 +277,7 @@ select {
 
 
 
-
+<div class="card" data-card-id="{{ loop.index }}" data-user-id="{{ session['user'] }}">
 <div class="cards-container" id="rrssContainer">
     {% for item in rrss_links %}
     <div class="card" data-channel="{{ item.channel }}" data-id="{{ loop.index }}">
@@ -296,11 +296,11 @@ select {
             <option value="Option2">Mukhtar Ahmed</option>
             <option value="Option3">Shahzad hameed</option>
         </select>
-    </div>
+        </div>
     {% endfor %}
+    </div>
+
 </div>
-
-
 
     
 
