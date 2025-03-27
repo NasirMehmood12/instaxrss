@@ -204,14 +204,18 @@ def rrss_page():
 
 
 @app.get("/get_selection/")
-def get_selection(card_id: str):
+def get_selection():
+    card_id = request.args.get("card_id")
+    if not card_id:
+        return jsonify({"selected_option": None})
     conn = psycopg2.connect(DATABASE_URL)
     cursor = conn.cursor()
     cursor.execute("SELECT selected_option FROM card_selections WHERE card_id = %s", (card_id,))
     result = cursor.fetchone()
     cursor.close()
     conn.close()
-    return {"selected_option": result[0] if result else None}
+    return jsonify({"selected_option": result[0] if result else None})
+
 
 
 
