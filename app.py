@@ -214,7 +214,7 @@ def get_selection():
     result = cursor.fetchone()
     cursor.close()
     conn.close()
-    return jsonify({"selected_option": result[0] if result else None})
+    return jsonify({"selected_option": None})
 
 
 
