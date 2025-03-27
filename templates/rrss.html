@@ -277,10 +277,9 @@ select {
 
 
 
-<div class="card" data-card-id="{{ loop.index }}" data-user-id="{{ session['user'] }}">
 <div class="cards-container" id="rrssContainer">
     {% for item in rrss_links %}
-    <div class="card" data-channel="{{ item.channel }}" data-id="{{ loop.index }}">
+    <div class="card" data-card-id="{{ loop.index }}" data-channel="{{ item.channel }}">
         {% if item.thumbnail %}
         <img src="{{ item.thumbnail }}" alt="Thumbnail" style="width: 580px; height: 300px; object-fit: cover; margin-bottom: 10px;">
         {% endif %}
@@ -288,18 +287,13 @@ select {
         <p><strong>Published Date:</strong> {{ item.pubDate }}</p>
         <p><strong>Channel:</strong> {{ item.channel }}</p>
         <a href="{{ item.link }}" target="_blank">Read more</a>
-
-  
-
         <select id="cardDropdown_{{ loop.index }}" class="cardDropdown">
             <option value="Option1">Hiba</option>
             <option value="Option2">Mukhtar Ahmed</option>
             <option value="Option3">Shahzad hameed</option>
         </select>
-        </div>
-    {% endfor %}
     </div>
-
+    {% endfor %}
 </div>
 
 
@@ -324,11 +318,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const dropdowns = document.querySelectorAll(".cardDropdown");
 
     dropdowns.forEach(dropdown => {
+        // Get card id from the closest .card
         const cardId = dropdown.closest(".card").getAttribute("data-card-id");
-        const userId = dropdown.closest(".card").getAttribute("data-user-id");
 
-        // Fetch saved selection
-        fetch(`/get_selection/?card_id=${cardId}&user_id=${userId}`)
+        // Fetch saved selection for this card
+        fetch(`/get_selection/?card_id=${cardId}`)
             .then(res => res.json())
             .then(data => {
                 console.log("ℹ️ Fetched selection:", data);
@@ -343,16 +337,15 @@ document.addEventListener("DOMContentLoaded", function () {
             fetch("/save_selection/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ card_id: cardId, user_id: userId, selected_option: this.value })
+                body: JSON.stringify({ card_id: cardId, selected_option: this.value })
             })
             .then(res => res.json())
             .then(data => console.log("✅ Saved:", data))
             .catch(err => console.error("❌ Save error:", err));
         });
     });
-
-    document.getElementById("channelFilter").addEventListener("change", applyFilters);
 });
+
 
     </script>
 </body>
