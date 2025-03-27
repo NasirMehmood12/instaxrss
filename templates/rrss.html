@@ -287,11 +287,13 @@ select {
         <p><strong>Published Date:</strong> {{ item.pubDate }}</p>
         <p><strong>Channel:</strong> {{ item.channel }}</p>
         <a href="{{ item.link }}" target="_blank">Read more</a>
+        <div>
         <select id="cardDropdown_{{ loop.index }}" class="cardDropdown">
             <option value="Option1">Hiba</option>
             <option value="Option2">Mukhtar Ahmed</option>
             <option value="Option3">Shahzad hameed</option>
         </select>
+        </div>
     </div>
     {% endfor %}
 </div>
