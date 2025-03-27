@@ -204,12 +204,16 @@ def rrss_page():
 
 
 @app.get("/get_selection/")
-def get_selection(card_id: str, user_id: str):
+def get_selection(card_id: str):
     conn = psycopg2.connect(DATABASE_URL)
     cursor = conn.cursor()
-    cursor.execute("SELECT selected_option FROM card_selections WHERE card_id = %s AND user_id = %s", (card_id, user_id))
+    cursor.execute("SELECT selected_option FROM card_selections WHERE card_id = %s", (card_id,))
     result = cursor.fetchone()
+    cursor.close()
+    conn.close()
     return {"selected_option": result[0] if result else None}
+
+
 
 
 
@@ -219,21 +223,20 @@ def save_selection():
     try:
         data = request.json  # Get data from JSON request
         card_id = data.get("card_id")
-        user_id = data.get("user_id")
         selected_option = data.get("selected_option")
 
-        if not card_id or not user_id or not selected_option:
+        if not card_id or not selected_option:
             return jsonify({"error": "Missing required fields"}), 400
 
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
         
         cursor.execute("""
-            INSERT INTO card_selections (card_id, user_id, selected_option)
-            VALUES (%s, %s, %s)
-            ON CONFLICT (card_id, user_id) 
+            INSERT INTO card_selections (card_id, selected_option)
+            VALUES (%s, %s)
+            ON CONFLICT (card_id)
             DO UPDATE SET selected_option = EXCLUDED.selected_option
-        """, (card_id, user_id, selected_option))
+        """, (card_id, selected_option))
 
         conn.commit()
         cursor.close()
