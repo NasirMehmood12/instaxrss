@@ -138,7 +138,7 @@ def trends_page():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("SELECT country, category, trending_search, search_volume, change_percentage, started, status FROM trending_data ")
+        cursor.execute("SELECT country, category, trending_search, search_volume, change_percentage, started, status FROM trending_data order by started DESC ")
         rss_links = cursor.fetchall()
         cursor.close()
         conn.close()
