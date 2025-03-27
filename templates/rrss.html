@@ -354,10 +354,12 @@ select {
     });
 }
 
+
 document.addEventListener("DOMContentLoaded", function () {
     const dropdowns = document.querySelectorAll(".cardDropdown");
 
     dropdowns.forEach(dropdown => {
+        // Get card id from the closest .card
         const cardId = dropdown.closest(".card").getAttribute("data-card-id");
 
         // Fetch saved selection for this card
@@ -371,10 +373,8 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(err => console.error("❌ Fetch error:", err));
 
-        // Save selection on valid change
+        // Save selection on change
         dropdown.addEventListener("change", function () {
-            if (!this.value) return; // Ignore empty selections
-
             fetch("/save_selection/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -384,12 +384,15 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 console.log("✅ Saved:", data);
                 this.selectedIndex = 0; // Reset dropdown to "Select"
-            })
+                )}
             .catch(err => console.error("❌ Save error:", err));
         });
     });
 });
 
+
+
+        
 
 
     </script>
