@@ -42,7 +42,7 @@ def get_fb_links():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute('SELECT page_name,link,timestamp,post_image FROM fb_links')
+        cursor.execute('SELECT page_name,link,timestamp,post_image FROM fb_links order by timestamp DESC')
         data = cursor.fetchall()
         
         results = [
