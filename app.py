@@ -37,27 +37,76 @@ def get_instagram_post():
 
 
 
+# def get_fb_links():
+#     """Fetch Facebook links from the database, including timestamps."""
+#     try:
+#         conn = psycopg2.connect(DATABASE_URL)
+#         cursor = conn.cursor()
+#         cursor.execute('SELECT page_name,link,timestamp,post_image FROM fb_links order by timestamp DESC')
+#         data = cursor.fetchall()
+        
+#         results = [
+#             # {"link": row[1], "page_name": row[0], "post_image": row[4], "timestamp": row[2] if row[2] else None}
+#             {"link": row[1], "page_name": row[0],"post_image": row[3], "timestamp": row[2] if row[2] else None}
+
+#             for row in data
+#         ]
+
+#         cursor.close()
+#         conn.close()
+#         return results  
+#     except Exception as e:
+#         print(f"Error fetching Facebook links: {e}")
+#         return []
+
+
+
+
+
 def get_fb_links():
-    """Fetch Facebook links from the database, including timestamps."""
+    """Fetch Facebook links from the database with computed sort_value for ordering."""
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute('SELECT page_name,link,timestamp,post_image FROM fb_links order by timestamp DESC')
+        query = """
+            SELECT 
+                page_name,
+                link,
+                timestamp,
+                post_image,
+                CASE 
+                    WHEN timestamp LIKE '%h' THEN CAST(SPLIT_PART(timestamp, 'h', 1) AS INTEGER) * 60
+                    WHEN timestamp LIKE '%m%' THEN CAST(SPLIT_PART(timestamp, 'm', 1) AS INTEGER)
+                    ELSE 0
+                END AS sort_value
+            FROM fb_links
+            ORDER BY sort_value DESC;
+        """
+        cursor.execute(query)
         data = cursor.fetchall()
-        
-        results = [
-            # {"link": row[1], "page_name": row[0], "post_image": row[4], "timestamp": row[2] if row[2] else None}
-            {"link": row[1], "page_name": row[0],"post_image": row[3], "timestamp": row[2] if row[2] else None}
 
+        results = [
+            {
+                "page_name": row[0],
+                "link": row[1],
+                "timestamp": row[2] if row[2] else None,
+                "post_image": row[3],
+                "sort_value": row[4]
+            }
             for row in data
         ]
 
         cursor.close()
         conn.close()
-        return results  
+        return results
     except Exception as e:
         print(f"Error fetching Facebook links: {e}")
         return []
+
+
+
+
+
 
 @app.route("/instagram")
 def index():
