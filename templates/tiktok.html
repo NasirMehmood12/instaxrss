@@ -109,28 +109,28 @@
         </div>
 
         <!-- TikTok Cards -->
-        <div class="grid">
-            {% for post in tiktok_post %}
-            <div class="card" data-page="{{ post.page_name }}">
-                {% if post.post_image %}
-                    {% if ".mp4" in post.img_src %}
-                        <video controls>
-                            <source src="{{ post.img_src }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    {% else %}
-                        <img src="{{ post.img_src }}" alt="TikTok Post">
-                    {% endif %}
-                {% else %}
-                    <p>No media available</p>
-                {% endif %}
-                <h3>{{ post.page_name }}</h3>
-
-                <a href="{{ post.link }}" target="_blank" class="btn btn-primary">View Post</a>
-            </div>
-            {% endfor %}
-        </div>
+<div class="grid">
+    {% for post in tiktok_post %}
+    <div class="card" data-page="{{ post.page_name }}">
+        {% if post.img_src %}
+            {% if ".mp4" in post.img_src %}
+                <video controls>
+                    <source src="{{ post.img_src }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            {% else %}
+                <img src="{{ post.img_src }}" alt="TikTok Post">
+            {% endif %}
+        {% else %}
+            <p>No media available</p>
+        {% endif %}
+        <h3>{{ post.page_name }}</h3>
+        <a href="{{ post.link }}" target="_blank" class="btn btn-primary">View Post</a>
     </div>
+    {% endfor %}
+</div>
+
+
 
     <script>
         document.getElementById("tiktokFilter").addEventListener("change", function() {
