@@ -185,7 +185,7 @@ def tiktok():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("SELECT page_name, img_src, video_link,  FROM tiktok_links")
+        cursor.execute("SELECT page_name, img_src, video_link  FROM tiktok_links")
         tiktok_links = cursor.fetchall()
         cursor.close()
         conn.close()
