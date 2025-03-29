@@ -176,6 +176,38 @@ def rss_page():
 
 
 
+@app.route("/tiktok")
+def tiktok():
+    """Show TikTok links"""
+    if "user" not in session:
+        return redirect(url_for("login"))
+
+    try:
+        conn = psycopg2.connect(DATABASE_URL)
+        cursor = conn.cursor()
+        cursor.execute("SELECT page_name, img_src, video_link,  FROM tiktok_links")
+        tiktok_links = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        tiktok_post = [
+            {"page_name": row[0], "img_src": row[1], "video_link": row[2]}
+            for row in tiktok_links
+        ]
+
+        return render_template("tiktok.html", tiktok_post=tiktok_post)
+
+    except Exception as e:
+        print(f"Error fetching TikTok links: {e}")
+        return redirect(url_for("index"))
+
+
+
+
+
+
+
+
 
 
 @app.route("/trends")
