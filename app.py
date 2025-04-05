@@ -198,7 +198,7 @@ SELECT
         ELSE 0
     END AS sort_value
 FROM tiktok_link
-ORDER BY sort_value DESC;
+ORDER BY sort_value ASC;
         """
         cursor.execute(query)
         tiktok_link = cursor.fetchall()
