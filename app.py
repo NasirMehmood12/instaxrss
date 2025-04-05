@@ -190,7 +190,7 @@ SELECT
     page_name,
     video_link,
     img_src,
-    post_time,
+    post_time
     CASE 
         WHEN post_time LIKE '%h' THEN CAST(SPLIT_PART(post_time, 'h', 1) AS INTEGER) * 60  -- Convert hours to minutes
         WHEN post_time LIKE '%m%' THEN CAST(SPLIT_PART(post_time, 'm', 1) AS INTEGER)       -- Minutes remain as is
