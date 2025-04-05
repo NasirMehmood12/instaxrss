@@ -185,7 +185,23 @@ def tiktok():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("SELECT page_name, img_src, video_link  FROM tiktok_links")
+        query = """
+SELECT 
+    page_name,
+    video_link,
+    img_src,
+    post_time,
+    CASE 
+        WHEN post_time LIKE '%h' THEN CAST(SPLIT_PART(post_time, 'h', 1) AS INTEGER) * 60  -- Convert hours to minutes
+        WHEN post_time LIKE '%m%' THEN CAST(SPLIT_PART(post_time, 'm', 1) AS INTEGER)       -- Minutes remain as is
+        WHEN post_time LIKE '%d' THEN CAST(SPLIT_PART(post_time, 'd', 1) AS INTEGER) * 1440  -- Convert days to minutes
+        ELSE 0
+    END AS sort_value
+FROM tiktok_link
+ORDER BY sort_value DESC;
+
+        """
+        cursor.execute(query)
         tiktok_links = cursor.fetchall()
         cursor.close()
         conn.close()
