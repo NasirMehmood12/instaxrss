@@ -345,7 +345,67 @@ select {
 
         
     <script>
-   function applyFilters() {
+//    function applyFilters() {
+//     let channelFilter = document.getElementById("channelFilter").value.toLowerCase();
+//     let cards = document.querySelectorAll(".card");
+
+//     cards.forEach(card => {
+//         let channelMatch = channelFilter === "" || card.getAttribute("data-channel").toLowerCase() === channelFilter;
+//         card.style.display = channelMatch ? "block" : "none";
+//     });
+// }
+
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     const dropdowns = document.querySelectorAll(".cardDropdown");
+
+//     dropdowns.forEach(dropdown => {
+//         const card = dropdown.closest(".card");
+//         const cardId = card.getAttribute("data-card-id");
+
+//         // Create a container to show stored names
+//         const nameContainer = document.createElement("div");
+//         nameContainer.className = "selected-names";
+//         card.appendChild(nameContainer);
+
+//         // Fetch saved selections for this card
+//         fetch(`/get_selection/?card_id=${cardId}`)
+//             .then(res => res.json())
+//             .then(data => {
+//                 console.log("ℹ️ Fetched selections:", data);
+//                 if (data.selected_options.length > 0) {
+//                     nameContainer.innerHTML = `<strong>Selected:</strong> ${data.selected_options.join(", ")}`;
+//                 }
+//             })
+//             .catch(err => console.error("❌ Fetch error:", err));
+
+//         // Save selection on change
+//         dropdown.addEventListener("change", function () {
+//             if (!this.value) return;
+
+//             fetch("/save_selection/", {
+//                 method: "POST",
+//                 headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify({ card_id: cardId, selected_option: this.value })
+//             })
+//             .then(res => res.json())
+//             .then(data => {
+//                 console.log("✅ Saved:", data);
+//                 // Refresh the stored names display
+//                 return fetch(`/get_selection/?card_id=${cardId}`);
+//             })
+//             .then(res => res.json())
+//             .then(data => {
+//                 nameContainer.innerHTML = `<strong>Selected:</strong> ${data.selected_options.join(", ")}`;
+//             })
+//             .catch(err => console.error("❌ Save error:", err));
+//         });
+//     });
+// });
+
+
+
+        function applyFilters() {
     let channelFilter = document.getElementById("channelFilter").value.toLowerCase();
     let cards = document.querySelectorAll(".card");
 
@@ -355,8 +415,10 @@ select {
     });
 }
 
-
 document.addEventListener("DOMContentLoaded", function () {
+    // Trigger the filter function when the channel dropdown changes
+    document.getElementById("channelFilter").addEventListener("change", applyFilters);
+
     const dropdowns = document.querySelectorAll(".cardDropdown");
 
     dropdowns.forEach(dropdown => {
