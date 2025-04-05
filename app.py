@@ -80,7 +80,7 @@ def get_fb_links():
                     ELSE 0
                 END AS sort_value
             FROM fb_links
-            ORDER BY sort_value DESC;
+            ORDER BY sort_value ASC;
         """
         cursor.execute(query)
         data = cursor.fetchall()
