@@ -199,7 +199,6 @@ SELECT
     END AS sort_value
 FROM tiktok_link
 ORDER BY sort_value DESC;
-
         """
         cursor.execute(query)
         tiktok_links = cursor.fetchall()
@@ -207,7 +206,12 @@ ORDER BY sort_value DESC;
         conn.close()
 
         tiktok_post = [
-            {"page_name": row[0], "img_src": row[1], "video_link": row[2]}
+            {
+                "page_name": row[0], 
+                "video_link": row[1], 
+                "img_src": row[2], 
+                "post_time": row[3]  # Add post_time to the dictionary
+            }
             for row in tiktok_links
         ]
 
@@ -216,6 +220,7 @@ ORDER BY sort_value DESC;
     except Exception as e:
         print(f"Error fetching TikTok links: {e}")
         return redirect(url_for("index"))
+
 
 
 
