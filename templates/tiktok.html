@@ -125,10 +125,15 @@
             <p>No media available</p>
         {% endif %}
         <h3>{{ post.page_name }}</h3>
+        
+        <!-- Add post_time here -->
+        <p class="post-time">{{ post.post_time }}</p>
+        
         <a href="{{ post.video_link }}" target="_blank" class="btn btn-primary">View Post</a>
     </div>
     {% endfor %}
 </div>
+
 
 
 
