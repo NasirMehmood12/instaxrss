@@ -201,7 +201,7 @@ FROM tiktok_link
 ORDER BY sort_value DESC;
         """
         cursor.execute(query)
-        tiktok_links = cursor.fetchall()
+        tiktok_link = cursor.fetchall()
         cursor.close()
         conn.close()
 
@@ -212,13 +212,13 @@ ORDER BY sort_value DESC;
                 "img_src": row[2], 
                 "post_time": row[3]  # Add post_time to the dictionary
             }
-            for row in tiktok_links
+            for row in tiktok_link
         ]
 
         return render_template("tiktok.html", tiktok_post=tiktok_post)
 
     except Exception as e:
-        print(f"Error fetching TikTok links: {e}")
+        print(f"Error fetching TikTok link: {e}")
         return redirect(url_for("index"))
 
 
