@@ -240,13 +240,13 @@ def trends_page():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("SELECT country, category, trending_search, search_volume, change_percentage, started, status
-FROM trending_data
-ORDER BY 
-  CASE
-    WHEN search_volume ILIKE '%K%' THEN CAST(REPLACE(REPLACE(search_volume, 'K', ''), '+', '') AS FLOAT) * 1000
-    ELSE CAST(REPLACE(search_volume, '+', '') AS FLOAT)
-  END DESC")
+        cursor.execute("""SELECT country, category, trending_search, search_volume, change_percentage, started, status
+                            FROM trending_data
+                            ORDER BY 
+                                CASE
+                                    WHEN search_volume ILIKE '%K%' THEN CAST(REPLACE(REPLACE(search_volume, 'K', ''), '+', '') AS FLOAT) * 1000
+                                ELSE CAST(REPLACE(search_volume, '+', '') AS FLOAT)
+                                END DESC""")
         rss_links = cursor.fetchall()
         cursor.close()
         conn.close()
