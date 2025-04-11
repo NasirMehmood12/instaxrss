@@ -29,7 +29,7 @@ def get_instagram_post():
             for row in data
         ]
         execution_time = end_time-start_time
-        print(execution_time)
+        print(f"instagram db execution time {execution_time}")
         cursor.close()
         conn.close()
         
@@ -69,6 +69,7 @@ def get_instagram_post():
 def get_fb_links():
     """Fetch Facebook links from the database with computed sort_value for ordering."""
     try:
+        start_time=time.time
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
         query = """
@@ -87,6 +88,7 @@ def get_fb_links():
         """
         cursor.execute(query)
         data = cursor.fetchall()
+        end_time=time.time
 
         results = [
             {
@@ -98,6 +100,8 @@ def get_fb_links():
             }
             for row in data
         ]
+        execution_time = end_time-start_time
+        print(f"facebook db execution time {execution_time}")
 
         cursor.close()
         conn.close()
