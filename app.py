@@ -18,12 +18,12 @@ PASSWORD = "imm@geotv"
 def get_instagram_post():
     """Fetch Instagram links from the database, including timestamps."""
     try:
-        start_time_fb = time.time()
+        start_time = time.time()
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
         cursor.execute("SELECT page_name, link, post_image, caption, timestamp AT TIME ZONE 'Asia/Karachi' FROM instagram_post ORDER BY timestamp DESC")
         data = cursor.fetchall()
-        end_time_fb = time.time()
+        end_time = time.time()
         results = [
             {"page_name": row[0], "link": row[1],"post_image":row[2],"caption":row[3], "timestamp": row[4].strftime('%Y-%m-%d %H:%M:%S') if row[4] else None,}
             for row in data
