@@ -18,12 +18,12 @@ PASSWORD = "imm@geotv"
 def get_instagram_post():
     """Fetch Instagram links from the database, including timestamps."""
     try:
-        start_time = time.time()
+        start_time_fb = time.time()
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
         cursor.execute("SELECT page_name, link, post_image, caption, timestamp AT TIME ZONE 'Asia/Karachi' FROM instagram_post ORDER BY timestamp DESC")
         data = cursor.fetchall()
-        end_time = time.time()
+        end_time_fb = time.time()
         results = [
             {"page_name": row[0], "link": row[1],"post_image":row[2],"caption":row[3], "timestamp": row[4].strftime('%Y-%m-%d %H:%M:%S') if row[4] else None,}
             for row in data
@@ -69,7 +69,7 @@ def get_instagram_post():
 def get_fb_links():
     """Fetch Facebook links from the database with computed sort_value for ordering."""
     try:
-        start_time=time.time
+        start_time=time.time()
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
         query = """
@@ -88,8 +88,8 @@ def get_fb_links():
         """
         cursor.execute(query)
         data = cursor.fetchall()
-        end_time=time.time
-
+        end_time=time.time()
+        execution_time = end_time-start_time
         results = [
             {
                 "page_name": row[0],
@@ -100,7 +100,7 @@ def get_fb_links():
             }
             for row in data
         ]
-        execution_time = end_time-start_time
+        
         print(f"facebook db execution time {execution_time}")
 
         cursor.close()
