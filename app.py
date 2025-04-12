@@ -226,7 +226,7 @@ ORDER BY sort_value ASC;
 
     except Exception as e:
         print(f"Error fetching TikTok link: {e}")
-        return redirect(url_for("index"))
+        return redirect(url_for("tiktok"))
 
 
 
