@@ -197,11 +197,11 @@ SELECT
     page_name,
     video_link,
     img_src,
-    post_time,
+    timestamp,
     CASE 
-        WHEN post_time LIKE '%h' THEN CAST(SPLIT_PART(post_time, 'h', 1) AS INTEGER) * 60  -- Convert hours to minutes
-        WHEN post_time LIKE '%m%' THEN CAST(SPLIT_PART(post_time, 'm', 1) AS INTEGER)       -- Minutes remain as is
-        WHEN post_time LIKE '%d' THEN CAST(SPLIT_PART(post_time, 'd', 1) AS INTEGER) * 1440  -- Convert days to minutes
+        WHEN timestamp LIKE '%h' THEN CAST(SPLIT_PART(timestamp, 'h', 1) AS INTEGER) * 60  -- Convert hours to minutes
+        WHEN timestamp LIKE '%m%' THEN CAST(SPLIT_PART(timestamp, 'm', 1) AS INTEGER)       -- Minutes remain as is
+        WHEN timestamp LIKE '%d' THEN CAST(SPLIT_PART(timestamp, 'd', 1) AS INTEGER) * 1440  -- Convert days to minutes
         ELSE 0
     END AS sort_value
 FROM tiktok_link
