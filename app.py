@@ -199,9 +199,12 @@ SELECT
     img_src,
     timestamp,
     CASE 
-        WHEN timestamp LIKE '%h' THEN CAST(SPLIT_PART(timestamp, 'h', 1) AS INTEGER) * 60  -- Convert hours to minutes
-        WHEN timestamp LIKE '%m%' THEN CAST(SPLIT_PART(timestamp, 'm', 1) AS INTEGER)       -- Minutes remain as is
-        WHEN timestamp LIKE '%d' THEN CAST(SPLIT_PART(timestamp, 'd', 1) AS INTEGER) * 1440  -- Convert days to minutes
+        WHEN RIGHT(timestamp, 3) = 'ago' AND POSITION('d' IN timestamp) > 0
+            THEN CAST(SPLIT_PART(REPLACE(timestamp, ' ago', ''), 'd', 1) AS INTEGER) * 1440
+        WHEN RIGHT(timestamp, 3) = 'ago' AND POSITION('h' IN timestamp) > 0
+            THEN CAST(SPLIT_PART(REPLACE(timestamp, ' ago', ''), 'h', 1) AS INTEGER) * 60
+        WHEN RIGHT(timestamp, 3) = 'ago' AND POSITION('m' IN timestamp) > 0
+            THEN CAST(SPLIT_PART(REPLACE(timestamp, ' ago', ''), 'm', 1) AS INTEGER)
         ELSE 0
     END AS sort_value
 FROM tiktok_link
