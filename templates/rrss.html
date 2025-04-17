@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
- <!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -470,6 +470,191 @@ document.addEventListener("DOMContentLoaded", function () {
                     .then(res => res.json())
                     .then(data => {
                         nameContainer.textContent = "Selected: " + data.selected_options.join(", ");
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+ -->
+
+
+
+
+
+
+
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS Feed</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #003366 0%, #ff00ff 100%);
+            color: white;
+            margin: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #240046, #9d0191);
+            padding: 15px;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .navbar a:hover { text-decoration: underline; }
+        .container { margin: 20px; }
+        .filters {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .filters label { margin-right: 8px; }
+        .filters select {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #fff;
+            background: #f9dbf9;
+            color: #333;
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        .card {
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .card img { width: 100%; height: auto; border-radius: 8px; }
+        .card h3 { margin-top: 10px; }
+        .card a { color: #1e90ff; text-decoration: none; }
+        .cardDropdown {
+            margin-top: 10px;
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: #fff;
+            color: #333;
+        }
+        .selected-names {
+            margin-top: 8px;
+            font-style: italic;
+            color: #f1c40f;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div>
+            <a href="{{ url_for('index') }}">Instagram</a>
+            <a href="{{ url_for('fb') }}">Facebook</a>
+            <a href="{{ url_for('rss_page') }}">News</a>
+            <a href="{{ url_for('rrss_page') }}">RSS</a>
+            <a href="{{ url_for('trends_page') }}">Trends</a>
+            <a href="{{ url_for('tiktok') }}">TikTok</a>
+        </div>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+
+    <section class="container">
+        <h2>RSS Feed</h2>
+        <div class="filters">
+            <label for="channelFilter">Filter by Channel:</label>
+            <select id="channelFilter">
+                <option value="">All</option>
+                {% for channel in channels %}
+                  <option value="{{ channel }}">{{ channel }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="cards-container" id="rrssContainer">
+            {% for item in rrss_links %}
+            <div class="card" data-card-id="{{ item.id }}" data-channel="{{ item.channel }}">
+                {% if item.thumbnail %}
+                <img src="{{ item.thumbnail }}" alt="Thumbnail">
+                {% endif %}
+                <h3>{{ item.title }}</h3>
+                <p><strong>Published:</strong> {{ item.pubDate }}</p>
+                <p><strong>Channel:</strong> {{ item.channel }}</p>
+                <a href="{{ item.link }}" target="_blank">Read more</a>
+
+                <!-- Card dropdown -->
+                <select class="cardDropdown" data-card-id="{{ item.id }}">
+                    <option value="" disabled selected>Pick your name</option>
+                    <option value="Farheen Qureshi">Farheen Qureshi</option>
+                    <option value="Mukhtar Ahmed">Mukhtar Ahmed</option>
+                    <option value="Hiba">Hiba</option>
+                    <option value="Hasan Sohail">Hasan Sohail</option>
+                    <option value="Syeda Zahra">Syeda Zahra</option>
+                    <option value="Maryam Nasir">Maryam Nasir</option>
+                    <option value="Eleen Bukhari">Eleen Bukhari</option>
+                    <option value="Sadaf Naushad">Sadaf Naushad</option>
+                    <option value="Salima Bhutto">Salima Bhutto</option>
+                    <option value="Syeda Waniya">Syeda Waniya</option>
+                    <option value="Maliha Javed">Maliha Javed</option>
+                    <option value="Nimra Afzal">Nimra Afzal</option>
+                    <option value="Zaid Bin Amir">Zaid Bin Amir</option>
+                    <option value="Zahra Shamil">Zahra Shamil</option>
+                    <option value="Areeba Sheikh">Areeba Sheikh</option>
+                    <option value="Hafeez">Hafeez</option>
+                    <option value="Geo Lifestyle">Geo Lifestyle</option>
+                </select>
+                <div class="selected-names" id="selected-{{ item.id }}"></div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <script>
+        function applyFilters() {
+            const filter = document.getElementById('channelFilter').value.toLowerCase();
+            document.querySelectorAll('.card').forEach(card => {
+                const channel = card.dataset.channel.toLowerCase();
+                card.style.display = (!filter || channel === filter) ? 'block' : 'none';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('channelFilter').addEventListener('change', applyFilters);
+
+            document.querySelectorAll('.cardDropdown').forEach(dropdown => {
+                const cardId = dropdown.dataset.cardId;
+                const nameDiv = document.getElementById(`selected-${cardId}`);
+
+                // show existing
+                fetch(`/get_selection/?card_id=${encodeURIComponent(cardId)}`)
+                  .then(res => res.json())
+                  .then(data => {
+                    if (data.selected_options.length) {
+                      nameDiv.textContent = 'Selected: ' + data.selected_options.join(', ');
+                    }
+                  });
+
+                // on change
+                dropdown.addEventListener('change', e => {
+                    const pick = e.target.value.trim();
+                    nameDiv.textContent = 'Selected: ' + pick; // immediate UI
+                    fetch('/save_selection/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ card_id: cardId, selected_option: pick })
                     });
                 });
             });
