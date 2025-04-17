@@ -134,7 +134,9 @@ select {
 
 <div class="cards-container" id="rrssContainer">
     {% for item in rrss_links %}
-    <div class="card" data-card-id="{{ loop.index }}" data-channel="{{ item.channel }}">
+<!--     <div class="card" data-card-id="{{ loop.index }}" data-channel="{{ item.channel }}"> -->
+<div class="card" data-card-id="{{ item.link }}" data-channel="{{ item.channel }}">
+
         {% if item.thumbnail %}
         <img src="{{ item.thumbnail }}" alt="Thumbnail" style="width: 580px; height: 300px; object-fit: cover; margin-bottom: 10px;">
         {% endif %}
@@ -145,7 +147,7 @@ select {
         
        
           
-        <select id="cardDropdown_{{ loop.index }}" class="cardDropdown">
+        <select id="cardDropdown_{{ item.link }}" class="cardDropdown">
             <option value="" selected disabled>Story picked by:</option>
             <option value="Farheen Qureshi">Farheen Qureshi</option>
             <option value="Mukhtar Ahmed">Mukhtar Ahmed</option>
