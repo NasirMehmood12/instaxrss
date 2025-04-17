@@ -432,6 +432,9 @@ def save_selection():
         conn.close()
 
         return jsonify({"message": "Selection saved"}), 200
+    except Exception as e:
+        print(f"Error saving selection: {e}")
+        return jsonify({"error": str(e)}), 500    
 
 
 
