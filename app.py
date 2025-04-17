@@ -321,18 +321,63 @@ def rrss_page():
 
 
 
+
+
 # @app.get("/get_selection/")
 # def get_selection():
 #     card_id = request.args.get("card_id")
 #     if not card_id:
-#         return jsonify({"selected_option": None})
+#         return jsonify({"selected_options": []})  # Return empty list if no card_id
+
 #     conn = psycopg2.connect(DATABASE_URL)
 #     cursor = conn.cursor()
+    
+#     # Fetch all selected options for the given card_id
 #     cursor.execute("SELECT selected_option FROM card_selections WHERE card_id = %s", (card_id,))
-#     result = cursor.fetchone()
+#     results = cursor.fetchall()
+    
 #     cursor.close()
 #     conn.close()
-#     return jsonify({"selected_option": None})
+
+#     # Extract names from query results and return as a list
+#     selected_options = [row[0] for row in results]
+#     return jsonify({"selected_options": selected_options})
+
+
+
+
+
+
+
+
+# @app.route("/save_selection/", methods=["POST"])
+# def save_selection():
+#     try:
+#         data = request.json  # Get data from JSON request
+#         card_id = data.get("card_id")
+#         selected_option = data.get("selected_option")
+
+#         if not card_id or not selected_option:
+#             return jsonify({"error": "Missing required fields"}), 400
+
+#         conn = psycopg2.connect(DATABASE_URL)
+#         cursor = conn.cursor()
+        
+#         cursor.execute("""
+#             INSERT INTO card_selections (card_id, selected_option)
+#             VALUES (%s, %s)
+#             ON CONFLICT (card_id, selected_option)
+#             DO NOTHING
+#         """, (card_id, selected_option))
+
+#         conn.commit()
+#         cursor.close()
+#         conn.close()
+
+#         return jsonify({"message": "Selection saved"}), 200
+#     except Exception as e:
+#         print(f"Error saving selection: {e}")
+#         return jsonify({"error": str(e)}), 500
 
 
 
@@ -343,33 +388,29 @@ def rrss_page():
 def get_selection():
     card_id = request.args.get("card_id")
     if not card_id:
-        return jsonify({"selected_options": []})  # Return empty list if no card_id
+        return jsonify({"selected_options": []})
 
-    conn = psycopg2.connect(DATABASE_URL)
-    cursor = conn.cursor()
-    
-    # Fetch all selected options for the given card_id
-    cursor.execute("SELECT selected_option FROM card_selections WHERE card_id = %s", (card_id,))
-    results = cursor.fetchall()
-    
-    cursor.close()
-    conn.close()
+    try:
+        conn = psycopg2.connect(DATABASE_URL)
+        cursor = conn.cursor()
 
-    # Extract names from query results and return as a list
-    selected_options = [row[0] for row in results]
-    return jsonify({"selected_options": selected_options})
+        cursor.execute("SELECT selected_option FROM card_selections WHERE card_id = %s", (card_id,))
+        results = cursor.fetchall()
 
+        cursor.close()
+        conn.close()
 
-
-
-
-
+        selected_options = [row[0] for row in results]
+        return jsonify({"selected_options": selected_options})
+    except Exception as e:
+        print(f"Error fetching selection: {e}")
+        return jsonify({"selected_options": []})
 
 
 @app.route("/save_selection/", methods=["POST"])
 def save_selection():
     try:
-        data = request.json  # Get data from JSON request
+        data = request.json
         card_id = data.get("card_id")
         selected_option = data.get("selected_option")
 
@@ -378,7 +419,7 @@ def save_selection():
 
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        
+
         cursor.execute("""
             INSERT INTO card_selections (card_id, selected_option)
             VALUES (%s, %s)
@@ -391,27 +432,6 @@ def save_selection():
         conn.close()
 
         return jsonify({"message": "Selection saved"}), 200
-    except Exception as e:
-        print(f"Error saving selection: {e}")
-        return jsonify({"error": str(e)}), 500
-
-
-
-
-
-# # API to save or update selection
-# @app.post("/save_selection/")
-# def save_selection(card_id: str, user_id: str, selected_option: str):
-#     conn = psycopg2.connect(DATABASE_URL)
-#     cursor = conn.cursor()
-#     cursor.execute("""
-#         INSERT INTO card_selections (card_id, user_id, selected_option)
-#         VALUES (%s, %s, %s)
-#         ON CONFLICT (card_id, user_id) DO UPDATE 
-#         SET selected_option = EXCLUDED.selected_option
-#     """, (card_id, user_id, selected_option))
-#     conn.commit()
-#     return {"message": "Selection saved"}
 
 
 
