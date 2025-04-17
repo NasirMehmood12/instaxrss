@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -134,7 +134,7 @@ select {
 
 <div class="cards-container" id="rrssContainer">
     {% for item in rrss_links %}
-<!--     <div class="card" data-card-id="{{ loop.index }}" data-channel="{{ item.channel }}"> -->
+
 <div class="card" data-card-id="{{ item.link }}" data-channel="{{ item.channel }}">
 
         {% if item.thumbnail %}
@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
     </script>
 </body>
 </html>
- -->
+ 
 
 
 
@@ -493,131 +493,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSS Feed</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: linear-gradient(to bottom right, #003366, #ff00ff); color: white; margin: 0; }
-        .navbar { display:flex; justify-content:space-between; background:linear-gradient(135deg, #240046, #9d0191); padding:15px; }
-        .navbar a { color:white; text-decoration:none; margin:0 10px; font-weight:bold; }
-        .navbar a:hover { text-decoration:underline; }
-        .container { padding:20px; }
-        h2 { font-size:2rem; margin:0 0 10px; }
-        .filters { display:flex; justify-content:flex-end; gap:10px; margin-bottom:20px; }
-        .filters label { color:white; }
-        .filters select { padding:8px; border-radius:8px; border:1px solid #fff; background:#f9dbf9; color:#333; }
-        .cards-container { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:20px; }
-        .card { background:#222; padding:15px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.3); position:relative; }
-        .card img { width:100%; border-radius:8px; margin-bottom:10px; }
-        .card h3 { margin:10px 0; }
-        .card p { margin:5px 0; }
-        .card a { color:#1e90ff; }
-        .cardDropdown { width:100%; padding:8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#333; margin-top:10px; }
-        .selected-names { margin-top:8px; color:#f1c40f; font-style:italic; }
-    </style>
-</head>
-<body>
-    <nav class="navbar">
-        <div>
-            <a href="{{ url_for('index') }}">Instagram</a>
-            <a href="{{ url_for('fb') }}">Facebook</a>
-            <a href="{{ url_for('rss_page') }}">News</a>
-            <a href="{{ url_for('rrss_page') }}">RSS</a>
-            <a href="{{ url_for('trends_page') }}">Trends</a>
-            <a href="{{ url_for('tiktok') }}">TikTok</a>
-        </div>
-        <a href="{{ url_for('logout') }}">Logout</a>
-    </nav>
-    <section class="container">
-        <h2>RSS Feed</h2>
-        <div class="filters">
-            <label for="channelFilter">Channel:</label>
-            <select id="channelFilter">
-                <option value="">All</option>
-                {% for channel in channels %}
-                <option value="{{ channel }}">{{ channel }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="cards-container">
-            {% for item in rrss_links %}
-            <div class="card" data-card-id="{{ item.id }}" data-channel="{{ item.channel }}">
-                {% if item.thumbnail %}
-                <img src="{{ item.thumbnail }}" alt="Thumbnail">
-                {% endif %}
-                <h3>{{ item.title }}</h3>
-                <p><strong>Published:</strong> {{ item.pubDate }}</p>
-                <p><strong>Channel:</strong> {{ item.channel }}</p>
-                <a href="{{ item.link }}" target="_blank">Read more</a>
-
-                <!-- Dropdown of users -->
-                <select class="cardDropdown" data-card-id="{{ item.id }}">
-                    <option value="" disabled>Pick your name</option>
-                    <option value="Areeba Sheikh ">Areeba Sheikh</option>
-                    <option value="Hafeez ">Hafeez</option>
-                    {% for user in users %}
-                    <option value="{{ user }}">{{ user }}</option>
-                    {% endfor %}
-                </select>
-
-                <!-- Display and auto-select saved name -->
-                <div class="selected-names" id="selected-{{ item.id }}"></div>
-            </div>
-            {% endfor %}
-        </div>
-    </section>
-    <script>
-        // Filter cards by channel
-        document.getElementById('channelFilter').addEventListener('change', () => {
-            const filter = document.getElementById('channelFilter').value.toLowerCase();
-            document.querySelectorAll('.card').forEach(card => {
-                const ch = card.dataset.channel.toLowerCase();
-                card.style.display = (!filter || ch === filter) ? 'block' : 'none';
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.cardDropdown').forEach(dropdown => {
-                const cardId = dropdown.dataset.cardId;
-                const nameDiv = document.getElementById(`selected-${cardId}`);
-
-                // Load existing picks
-                fetch(`/get_selection/?card_id=${encodeURIComponent(cardId)}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.selected_options.length) {
-                            const pick = data.selected_options[0];
-                            nameDiv.textContent = 'Selected: ' + pick;
-                            dropdown.value = pick;  // set dropdown to saved value
-                        }
-                    });
-
-                // On user pick
-                dropdown.addEventListener('change', e => {
-                    const pick = e.target.value;
-                    if (!pick) return;
-
-                    // Show immediately and select
-                    nameDiv.textContent = 'Selected: ' + pick;
-                    dropdown.value = pick;
-
-                    // Persist
-                    fetch('/save_selection/', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ card_id: cardId, selected_option: pick })
-                    });
-                });
-            });
-        });
-    </script>
-</body>
-</html>
-
- 
 
 
 
